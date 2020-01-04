@@ -1,0 +1,14 @@
+.home {
+ /*   background: url(../assets/home-background.png); */
+    background-color:#19a79a;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;    
+}

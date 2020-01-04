@@ -1,0 +1,100 @@
+<div class="challan-page">
+    <div class="om-div"><img width="18" height="18" src="../assets/Om_symbol.png"/></div>
+    <div class="challan-title">
+            <div>CHALLAN/ESTIMATE</div>
+        </div>
+        
+        <div class="logo-box">
+            <img id="trendy-logo" src="../assets/trendy.PNG"/>
+            <div class="lk-info">
+                <div class="lk-title">LAVIKA KNITWEARS</div>
+                <div class="lk-address">B-V-493, NALBANDA STREET, WAIT GANJ, LUDHIANA - 141008</div>
+            </div>
+            <div class="lk-contact">
+                <div>O: 0161-4648284</div>                
+                <div>O: 0161-2704284</div>                
+                <div>M: 94638-84341 (Rajeev Jain)</div>                
+                    <div>M: 94177-74999 (Sanjeev Jain)</div>                
+                    <div>M: 79863-20175 (Nikhil Jain)</div>                
+                    <!-- <div>E-mail: lavikaknitwears1991@gmail.com</div>                 -->
+                </div>
+        </div>
+        <div class="lk-products">
+                Manufacturers & Suppliers of: High Class Hosiery Blazer/Tweed | Cloth Garments | School Uniform Coat | Sweater & T-Shirts
+            </div>
+        <div class="lk-email">
+            E-mail: lavikaknitwears1991@gmail.com                
+        </div>
+                <div class="first-line-box">
+                <div class="challan-number-box">
+                        <div class="challan-label" >Challan #</div>
+                        <div id="challan-input" [innerText]="bill?.challanNumber"></div>
+                    </div> 
+                <div class="date-box">
+                    <div class="date-label">Dated:</div>
+                    <div class="date-input" [innerText]="bill?.billDate"></div>
+                </div>
+        </div>
+        <div class="second-line-box">
+                <div class="date-label">Name and Address:</div>
+                <div class="contact-box" [innerText]="bill?.companyData">
+                </div> 
+        </div>
+        <table class='billing-table' id="order-table">
+            <col width="5%">
+            <col width="43%">
+            <col width="13%">
+            <col width="13%">
+            <col width="13%">
+            <col width="13%">                   
+            <tr class="bill-table-header">
+                <th>Sr No.</th>
+                <th>Description of Goods/Services</th>
+                <th>Size</th>
+                <th>Rate</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+            <tr *ngFor = "let row of bill.table; let i = index">
+                <td class="output-cells">{{getSerialNo(i)}}</td>     
+                <td class="output-cells">{{row.item}}</td>     
+                <td class="output-cells">{{row.size}}</td>     
+                <td class="output-cells">{{row.rate}}</td>     
+                <td class="output-cells">{{row.qty}}</td>     
+                <td class="output-cells">{{row.price}}</td>     
+            </tr>
+        </table>
+        <div class="bottom-box">
+                <div class="payment-box" >
+                    <div>Our Bank: Central Bank of India | Branch: Civil Lines, Ludhiana</div>
+                    <div>Account Number: CC A/C No. 1251953629 | IFSC Code: CBIN0280360</div>
+                   <!-- <div class="tAndc">Terms & Conditions:</div>
+                    <div>
+                        <ol>
+                        <li>Interest @ 18% will be charged extra, if the payment is not made within 7 days.</li>
+                        <li>Subject to Ludhiana jurisdiction only.</li>
+                        <li>Our responsibility ceases as soon as the goods leave our premises.</li>
+                        </ol>
+                    </div> 
+                </div>  -->
+                <div class='add-total-box'>
+                        <div class="add-total-row-box">
+                            <div class="add-total-row-one">Total</div>  
+                            <div id = "bill-total" class="add-total-row-two" [innerText]="bill?.billingTotal" ></div>
+                        </div> 
+                        <div class="add-total-row-box">
+                            <div class="add-total-row-one">GST for Bill #{{bill?.gstbillNumber}}</div>  
+                            <div id = "gst" class="add-total-row-two" [innerText]="bill?.gstRate"></div>
+                        </div> 
+                        <div class="add-total-row-box">
+                            <div class="add-total-row-one">Trans.Charges</div>  
+                            <div id = "tr-charge" class="add-total-row-two" [innerText]="bill?.transCharge"></div>
+                        </div> 
+                        <div class="add-total-row-box">
+                            <div class="add-total-row-one">Net Payable</div>  
+                            <div id = "net-total" class="add-total-row-two" [innerText]="bill?.netAmount"></div>
+                        </div> 
+                    </div>
+        </div>
+
+</div>

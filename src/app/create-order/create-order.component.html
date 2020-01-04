@@ -1,0 +1,71 @@
+<div class="challan-page">
+        <div class="om-div"><img width="18" height="18" src="../assets/Om_symbol.png"/></div>
+        <div class="challan-title">
+                <div>CHALLAN/ESTIMATE</div>
+            </div>
+            <div class="logo-box"><img width="140" height="60" src="../assets/trendy.PNG"/></div>
+            <div class="first-line-box">
+                    <div class="challan-number-box">
+                            <div class="challan-label" contenteditable="true" >Challan #</div>
+                            <div id="challan-input" class="challan-input" contenteditable="true"></div>
+                            <div class="challan-label" contenteditable="true" >GST #</div>
+                            <div id="gst-input" class="challan-input" contenteditable="true"></div>
+                    </div>
+                    <!-- <div class="date-box">      
+                            <div class="date-label" contenteditable="true" >Date</div>
+                            <input id="date-input" class="date-input" placeholder="dd/mm/yyyy"/>
+                    </div>                   -->
+                    <mat-form-field>
+                        <input id="date-input" matInput [matDatepicker]="picker1" placeholder="Date" [formControl]="date">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+                      
+            </div>
+            <div class="second-line-box">
+                    <div class="contact-box">
+                            <textarea id="company-input" class="company-input" contenteditable="true" rows="2" cols = "50" placeholder="Enter Company name here"></textarea>
+                    </div> 
+            </div>
+            <table class='billing-table' id="order-table">
+                <tr class="bill-table-header">
+                    <th>Item</th>
+                    <th>Size</th>
+                    <th>Rate</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            <tr>
+                    <td class="first-row">
+                        <select >
+                                <option *ngFor="let item of items" [value]="item.id">{{item.itemName}}</option>
+                        </select>         
+                        <div class="editable-first-row" contenteditable="true"></div>
+                    </td>         
+                    <td class="row-style size" contenteditable="true"></td>
+                    <td (keyup)="callCalc($event)" class="row-style rate" contenteditable="true" ></td>        
+                    <td (keyup)="callCalc($event)" class="row-style qty" contenteditable="true"></td>
+                    <td (keyup)="callCalc($event)" class="row-style price" ></td>
+            </tr>
+            </table>
+            <button (click)="addRow()" class="add-row-btn">Add Row</button>
+            <div class='add-total-box'>
+                    <div class="add-total-row-box">
+                        <div class="add-total-row-one">Total</div>  
+                        <div contenteditable="true" id = "bill-total" class="add-total-row-two" ></div>
+                    </div> 
+                    <div class="add-total-row-box">
+                        <div contenteditable="true" class="add-total-row-one">GST/Taxes</div>  
+                        <div contenteditable="true" id = "gst" class="add-total-row-two" (keyup)="callGST($event)"></div>
+                    </div> 
+                    <div class="add-total-row-box">
+                        <div contenteditable="true" class="add-total-row-one">Trans.Charges</div>  
+                        <div contenteditable="true" id = "tr-charge" class="add-total-row-two" (keyup)="callTransportationCharge($event)"></div>
+                    </div> 
+                    <div class="add-total-row-box">
+                        <div class="add-total-row-one">Net Payable</div>  
+                        <div contenteditable="true" id = "net-total" class="add-total-row-two"></div>
+                    </div> 
+                </div>
+                <button class="save-order-btn" (click)="saveAndPrintOrder()">Save and Print</button>
+    </div>

@@ -1,0 +1,232 @@
+.om-div {
+    display: flex;  
+    justify-content: center;
+}
+@media print {
+    .challan-page {
+     height: auto;
+     overflow: visible;
+    }
+    .billing-table {
+        page-break-after: always;
+        page-break-before: always;
+        
+    }
+   }
+.challan-page {
+    height: calc(100vh - 2%);
+    overflow: auto;
+    background: white;
+    padding-top: 20px;
+    padding: 1% 3%;
+}
+.challan-title {
+    text-align: center;
+    /* background: black; */
+    /* color:white; */
+    font: bold 18px sans-serif;
+    font-variant: all-small-caps;
+    letter-spacing: 0.5em;
+    padding: 4px 0;
+    margin: 5px 0 0 0;
+}
+.logo-box {
+    display: flex;
+    justify-content: space-between;
+    border: 0.5px dashed midnightblue;
+    padding: 15px 10px 10px 5px;
+}
+.lk-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.lk-prods-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.lk-title {
+    font-size: 42px;
+    font-weight: bold;
+    color: red;
+    font-variant: all-small-caps;
+    font-family: Helvetica;
+}
+.lk-address {
+    color: midnightblue;
+    font-family: Helvetica;
+    font-variant: all-small-caps;
+    font-size: 16px;
+}
+.lk-contact {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: sans-serif;
+    letter-spacing: 0.75px;
+}
+.lk-products {
+    display: flex;
+    justify-content: center;
+    font-family: Helvetica;
+    font-size: 14px;
+    font-variant: all-small-caps;
+    padding: 18px 0;
+    border-bottom: 0.5px dashed midnightblue;
+    border-left: 0.5px dashed midnightblue;
+    border-right: 0.5px dashed midnightblue;
+}
+.lk-email {
+    display: flex;
+    justify-content: center;
+    font-family: Helvetica;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 0;
+    border-bottom: 0.5px dashed midnightblue;
+    border-left: 0.5px dashed midnightblue;
+    border-right: 0.5px dashed midnightblue;
+}
+.challan-number-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.first-line-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 0.5px dashed midnightblue;
+    border-left: 0.5px dashed midnightblue;
+    border-right: 0.5px dashed midnightblue;
+}
+#trendy-logo {
+    width: 140px; 
+    height: 60px;
+    transform: rotate(-10deg); 
+}
+.challan-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+#challan-input {
+    margin-left: 10px;
+    font-weight: bold;
+    font-family: Helvetica;
+    font-variant: small-caps;
+}
+.date-box {
+    display: flex;
+}
+.date-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+.date-input {
+    margin-left: 10px;
+    font-weight: bold;
+    font-family: Helvetica;
+    font-variant: small-caps;
+}
+.bill-table-header {
+    background: #EEE;
+}
+.first-row {
+    display: flex;
+    flex-direction: row;
+
+}
+.editable-first-row {
+    min-width: 100px;
+    border: 0.5px solid lightblue;
+}
+.first-row-particulars {
+    min-width: 25px;
+    border: 0,
+}
+.second-line-box {
+    display: flex;
+    align-items: center;
+    padding: 16px 10px;
+    text-align: center;
+    border-bottom: 0.5px dashed midnightblue;
+    border-left: 0.5px dashed midnightblue;
+    border-right: 0.5px dashed midnightblue;
+}
+.contact-box {
+    border-bottom: 1px dotted midnightblue;
+    font-size: 14px;
+    font-family: Helvetica;
+    font-weight: bold;
+    margin-left: 8px;
+}
+.billing-table{
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    font-family:"Open Sans", sans-serif;
+    font-size: 16px;
+}
+th, td{
+    border: 1px solid #DDD;
+    border-collapse: collapse;
+    padding: 4px 0px;
+
+}
+.row-style {
+    text-align: center;
+    position: relative;
+}
+.add-total-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 10px;
+}
+.add-total-row-one {
+    background: #EEE;
+    border: 1px solid #DDD;
+    border-radius: 0.25em;
+    border-style: solid;
+    padding: 5px;
+    width: 110px;
+    font-family:"Open Sans", sans-serif;
+    font-size: 16px;
+}
+.add-total-row-box {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2.5px; 
+}
+.add-total-row-two {
+    min-width: 110px;
+    padding: 5px;
+    border: 1px solid #DDD;
+    border-radius: 0.25em;
+    border-style: solid;
+    font-family:"Open Sans", sans-serif;
+    font-size: 16px;
+}
+.output-cells {
+    text-align: center;
+    padding: 4px;
+}
+.bottom-box {
+    display: flex;
+    justify-content: space-between;
+}
+.payment-box {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    font-family: Helvetica;
+    padding: 9px;
+    flex-grow: 2;
+}
+.tAndc {
+    font-variant: small-caps;
+}

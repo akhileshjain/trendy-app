@@ -1,0 +1,74 @@
+<div class="add-cust-box">
+    <div class='add-cust-label'>Add Customer</div>
+    <form [formGroup]="addCustomerForm" (ngSubmit)="onAddCustomer()" class="add-cust-form">
+        <div class="form-group">
+            <mat-form-field class="input-fields">
+                    <input matInput placeholder="Company Name" id="companyname" formControlName='companyname' class="form-control"/>
+                    <mat-error *ngIf="addCustomerForm.get('companyname').hasError('required')">Please enter Company Name!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field class="input-fields">
+                    <input matInput placeholder="Customer Name" id="custname" formControlName='custname' class="form-control"/>    
+                    <mat-error *ngIf="addCustomerForm.get('custname').hasError('required')">Please enter Customer Name!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+             <mat-form-field class="input-fields">
+                <textarea matInput placeholder="Address" id="address" formControlName='address' class="form-control"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field class="input-fields">
+                    <input matInput placeholder="City" id="city" formControlName='city' class="form-control"/>
+                    <mat-error *ngIf="addCustomerForm.get('city').hasError('required')">Please enter City!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field class="input-fields">
+                    <input matInput placeholder="District" id="district" formControlName='district' class="form-control"/>
+                    <mat-error *ngIf="addCustomerForm.get('district').hasError('required')">Please enter District!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field >
+                <mat-label>State/UT</mat-label>
+                <mat-select formControlName='state'>
+                    <mat-option *ngFor="let state of states" [value]="state.value">{{state.viewValue}}</mat-option>
+                </mat-select>         
+                <mat-error *ngIf="this.addCustomerForm.controls['state'].hasError('required')">Please select the state/UT!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field class="input-fields">
+                    <input matInput placeholder="PIN Code" id="pin" formControlName='pin' class="form-control"/>
+            </mat-form-field>
+        </div>
+
+        <div class="form-group">
+                <mat-form-field class="input-fields">
+                        <input matInput placeholder="Mobile" id="mobile" formControlName='mobile' class="form-control"/>
+                        <mat-error *ngIf="addCustomerForm.get('mobile').hasError('required')">Please enter Mobile!</mat-error>
+                        <mat-error *ngIf="addCustomerForm.get('mobile').hasError('minLength')">Please enter a Mobile No. of 10 digits!</mat-error>
+                        <mat-error *ngIf="addCustomerForm.get('mobile').hasError('pattern')">Please enter a valid Mobile No.!</mat-error>
+                    </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field class="input-fields">
+                    <input matInput placeholder="Phone" id="phone" formControlName='phone' class="form-control"/>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field class="input-fields">
+                    <input matInput placeholder="E-mail" id="email" formControlName='email' class="form-control"/>
+                    <mat-error *ngIf="addCustomerForm.get('email').hasError('email')">Please enter a valid E-mail address!</mat-error>
+                </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field class="input-fields">
+                    <input matInput placeholder="GSTIN (optional)" id="gstin" formControlName='gstin' class="form-control"/>
+            </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" [disabled]="!addCustomerForm.valid" type="submit">Submit</button>
+    </form>
+</div>
