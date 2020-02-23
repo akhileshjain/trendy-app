@@ -13,6 +13,7 @@ export class CreateOrderComponent implements OnInit {
   gstCost: Number = 0.0;
   trCost: Number = 0.0;
   billTotal: Number = 0.0;
+  discCost: Number = 0.0;
   items = [];
   date = new FormControl(new Date());
   constructor(private http: HttpClient, private orderService: OrdersService, 
@@ -26,12 +27,12 @@ export class CreateOrderComponent implements OnInit {
   }
   getNumber(number) {
     if(number !== undefined || number !== null) {
-      return  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(number);
+      return number; //new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(number);
     }
   }
   saveAndPrintOrder() {
     let table = [];
-    let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: '', table: [], billingTotal: '', gstRate: '', transCharge: '', netAmount: ''};
+    let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: '', table: [], billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
 
     let challanNumber = document.getElementById("challan-input").innerText.trim();
     let gstbillNumber = document.getElementById("gst-input").innerText.trim();
@@ -54,9 +55,9 @@ export class CreateOrderComponent implements OnInit {
       let itemType = (<HTMLSelectElement>tableRows[i].cells[0].children[0]).selectedOptions[0].innerText;
       let itemCustomInfo = (<HTMLElement>tableRows[i].cells[0].children[1]).innerText;
       let itemSize = tableRows[i].cells[1].innerText;
-      let itemRate = tableRows[i].cells[2].innerText;
-      let itemQty = tableRows[i].cells[3].innerText;
-      let itemPrice = tableRows[i].cells[4].innerText;
+      let itemRate = "₹ " + (<HTMLInputElement>tableRows[i].cells[2].children[0]).value;
+      let itemQty = (<HTMLInputElement>tableRows[i].cells[3].children[0]).value;
+      let itemPrice = "₹ " + tableRows[i].cells[4].innerText;
       row.item = itemType + ' ' + itemCustomInfo;
       row.size = itemSize;
       row.rate = itemRate;
@@ -64,10 +65,12 @@ export class CreateOrderComponent implements OnInit {
       row.price = itemPrice;
       table.push(row);
     }
-    let billingTotal = document.getElementById('bill-total').innerText; 
-    let gstRate = document.getElementById('gst').innerText; 
-    let transCharge = document.getElementById('tr-charge').innerText; 
-    let netAmount = document.getElementById('net-total').innerText; 
+    let billingTotal = "₹ " + document.getElementById('bill-total').innerText; 
+    let gstRate = "₹ " + (<HTMLInputElement>document.getElementById('gst')).value.trim(); 
+    let transCharge = "₹ " + (<HTMLInputElement>document.getElementById('tr-charge')).value.trim(); 
+    let netAmount = "₹ " + document.getElementById('net-total').innerText; 
+    let discCost = "₹ " + this.discCost;
+    let grNo = (<HTMLSelectElement>document.getElementById("gr-input")).value.trim();
 
     billPage.challanNumber = challanNumber;
     billPage.gstbillNumber = gstbillNumber;
@@ -78,22 +81,33 @@ export class CreateOrderComponent implements OnInit {
     billPage.gstRate = gstRate;
     billPage.transCharge = transCharge;
     billPage.netAmount = netAmount;
+    billPage.disc = discCost;
+    billPage.grNo = grNo;
+
     console.log(billPage);
     this.orderService.billingOrder = billPage;
     this.router.navigate(['/bill_print']);
   }
   callGST(event) {
-    if(event.target.innerText.indexOf("₹") <= 0 && !isNaN(parseFloat(event.target.innerText.replace('₹', '').replace('/,/g', '').trim()))) {
-      let gst = parseFloat(event.target.innerText.replace('₹', '').replace('/,/g', '').trim());
-      event.target.innerText = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(gst);
+    if(!isNaN(parseFloat(event.target.value.trim()))) {
+      let gst = parseFloat(event.target.value.trim());
+      event.target.value = gst;
       this.gstCost = gst;
       this.setNetTotal();
     } 
   }
+  callDisc() {
+    if(!isNaN(parseFloat(document.getElementById('disc').innerText.trim()))) {
+      let disc = document.getElementById('disc').innerText.trim();
+    //  event.target.innerText = disc;
+      this.discCost = (<any>disc / 100) * <number>this.billTotal;
+      this.setNetTotal();
+    } 
+  }
   callTransportationCharge(event) {
-    if(event.target.innerText.indexOf("₹") <= 0 && !isNaN(parseFloat(event.target.innerText.replace('₹', '').replace('/,/g', '').trim()))) {
-      let tr_charge = parseFloat(event.target.innerText.replace('₹', '').replace('/,/g', '').trim());
-      event.target.innerText = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(tr_charge);
+    if(!isNaN(parseFloat(event.target.value.trim()))) {
+      let tr_charge = parseFloat(event.target.value.trim());
+      event.target.value = tr_charge;
       this.trCost = tr_charge;
       this.setNetTotal();
     }
@@ -101,24 +115,24 @@ export class CreateOrderComponent implements OnInit {
   callCalc(event) {
     let total = 0;
     if (event.target.classList.contains('rate') === true) {
-       if (!isNaN(parseFloat(event.target.innerText.substring(2).replace(/,/g, '').trim()))) {
-           let rate = parseFloat(event.target.innerText.substring(2).replace(/,/g, '').trim());
-           let qty = parseInt(event.target.parentNode.cells[3].innerText.trim());
+       if (!isNaN(parseFloat(event.target.value.trim()))) {
+           let rate = parseFloat(event.target.value.trim());
+           let qty = parseInt(event.target.parentNode.parentNode.cells[3].children[0].value.trim());
            if(!isNaN(rate) && !isNaN(qty)) {
              let price = rate * qty;
-             event.target.parentNode.cells[4].innerText = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(price);
+             event.target.parentNode.parentNode.cells[4].innerText = price;
             }
        } else {
             let rate = 0;
-            event.target.innerText = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(rate); 
+            event.target.innerText = rate;
        }
     } else if(event.target.classList.contains('qty') === true) {
-      if(!isNaN(parseInt(event.target.innerText.trim()))) {
-          let rate = parseFloat(event.target.parentNode.cells[2].innerText.substring(2).replace(/,/g, '').trim());
-          let qty = event.target.innerText.trim();
+      if(!isNaN(parseInt(event.target.value.trim()))) {
+          let rate = parseFloat(event.target.parentNode.parentNode.cells[2].children[0].value.trim());
+          let qty = event.target.value.trim();
           if(!isNaN(rate) && !isNaN(qty)) {
           let price = rate * qty;
-          event.target.parentNode.cells[4].innerText =new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(price);          
+          event.target.parentNode.parentNode.cells[4].innerText = price;
           }
       }
     }
@@ -126,7 +140,7 @@ export class CreateOrderComponent implements OnInit {
     if((<HTMLTableElement>document.getElementById("order-table")).rows) {
       for(let i = 0; i < (<HTMLTableElement>document.getElementById("order-table")).rows.length; i++) {
           if(i !== 0) {
-              let ind_total = parseFloat((<HTMLTableElement>document.getElementById("order-table")).rows[i].cells[4].innerText.substring(2).replace(/,/g, '').trim());
+              let ind_total = parseFloat((<HTMLTableElement>document.getElementById("order-table")).rows[i].cells[4].innerText.trim());
               if(!isNaN(ind_total)) {
                 total = total + ind_total;
               }
@@ -138,11 +152,12 @@ export class CreateOrderComponent implements OnInit {
         (<HTMLTableElement>document.getElementById("bill-total")).innerText = formattedTotal; 
       
       }
-      this.setNetTotal();
+      
+      this.callDisc();
     }
   }
   setNetTotal = function() {
-    this.netTotal = this.billTotal + this.gstCost + this.trCost;
+    this.netTotal = this.billTotal - this.discCost + this.gstCost + this.trCost;
     let formattedNetTotal = this.getNumber(this.netTotal);
     (<HTMLTableElement>document.getElementById("net-total")).innerText = formattedNetTotal;    
   }
@@ -159,7 +174,7 @@ export class CreateOrderComponent implements OnInit {
     
     var selectList = document.createElement("select");
     var editableDiv = document.createElement("div");
-    editableDiv.style.minWidth = '100px';
+    editableDiv.style.minWidth = '340px';
     editableDiv.style.border = '0.5px solid lightblue';
     selectList.id = "mySelect";
     cell0.appendChild(selectList);
@@ -181,11 +196,18 @@ export class CreateOrderComponent implements OnInit {
     cell1.style.textAlign = 'center';
     cell1.style.padding = '4px 0';
 
-    cell2.contentEditable = "true";
-    cell2.style.border = '1px solid #DDD';
-    cell2.style.textAlign = 'center';
-    cell2.style.padding = '4px 0';
-    cell2.classList.add('rate');
+    var inp1 = document.createElement("input");
+    inp1.style.border = '1px solid #DDD';
+    inp1.style.textAlign = 'center';
+    inp1.style.padding = '4px 4px';
+    inp1.style.width = '200px';
+    inp1.classList.add('rate');
+    cell2.appendChild(inp1);
+//    cell2.contentEditable = "true";
+//    cell2.style.border = '1px solid #DDD';
+//    cell2.style.textAlign = 'center';
+//    cell2.style.padding = '4px 0';
+//    cell2.classList.add('rate');
     cell2.addEventListener("keyup", ($event) => { this.callCalc($event); 
       let number = parseFloat((<HTMLElement>$event.target).innerText);
       if(!isNaN(number)) {
@@ -194,19 +216,21 @@ export class CreateOrderComponent implements OnInit {
       } 
       let formattedprice = parseFloat((<HTMLElement>(<HTMLElement>$event.target).parentNode.lastElementChild).innerText);
       if(!isNaN(formattedprice)) {
-        (<HTMLElement>(<HTMLElement>$event.target).parentNode.lastElementChild).innerText = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(formattedprice);          
+        (<HTMLElement>(<HTMLElement>$event.target).parentNode.lastElementChild).innerText = formattedprice.toString().trim(); // new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(formattedprice);          
       }
     });
 
-    cell3.contentEditable = "true";
-    cell3.style.border = '1px solid #DDD';
-    cell3.style.padding = '4px 0';
-    cell3.style.textAlign = 'center';
-    cell3.classList.add('qty');
+    var inp = document.createElement("input");
+    inp.style.padding = '4px 4px';
+    inp.style.width = '200px';
+    inp.style.border = '1px solid #DDD';
+    inp.style.textAlign = 'center';
+    inp.classList.add('qty');
+    cell3.appendChild(inp); //contentEditable = "true";
     cell3.addEventListener("keyup", ($event) => { this.callCalc($event)
       let formattedprice = parseFloat((<HTMLElement>(<HTMLElement>$event.target).parentNode.lastElementChild).innerText);
       if(!isNaN(formattedprice)) {
-        (<HTMLElement>(<HTMLElement>$event.target).parentNode.lastElementChild).innerText = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(formattedprice);          
+        (<HTMLElement>(<HTMLElement>$event.target).parentNode.lastElementChild).innerText = formattedprice.toString().trim(); //new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(formattedprice);          
       }
     });
 

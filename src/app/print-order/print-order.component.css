@@ -24,9 +24,9 @@
     text-align: center;
     /* background: black; */
     /* color:white; */
-    font: bold 18px sans-serif;
+    font: bold 32px sans-serif;
     font-variant: all-small-caps;
-    letter-spacing: 0.5em;
+    letter-spacing: 0.4em;
     padding: 4px 0;
     margin: 5px 0 0 0;
 }
@@ -118,6 +118,7 @@
     font-weight: bold;
     font-family: Helvetica;
     font-variant: small-caps;
+    font-size: 18px;
 }
 .date-box {
     display: flex;
@@ -159,7 +160,7 @@
 }
 .contact-box {
     border-bottom: 1px dotted midnightblue;
-    font-size: 14px;
+    font-size: 18px;
     font-family: Helvetica;
     font-weight: bold;
     margin-left: 8px;
@@ -202,6 +203,19 @@ th, td{
     flex-direction: row;
     margin-bottom: 2.5px; 
 }
+.add-total-row-box-1 {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2.5px; 
+    width: 100%;
+    justify-content: space-between;
+}
+#gr_number{
+    font-size: 18px;
+}
+.tt_row {
+    display: flex;
+}
 .add-total-row-two {
     min-width: 110px;
     padding: 5px;
@@ -229,4 +243,10 @@ th, td{
 }
 .tAndc {
     font-variant: small-caps;
+}
+.sign-box {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 40px;
 }
