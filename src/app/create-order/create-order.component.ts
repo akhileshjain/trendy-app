@@ -173,11 +173,11 @@ export class CreateOrderComponent implements OnInit {
       let finalY = doc.previousAutoTable.finalY; //this gives you the value of the end-y-axis-position of the previous autotable.
       doc.text("Total", 12, finalY + 10); 
       // Open PDF document in new tab
-      doc.output('dataurlnewwindow')
+      // doc.output('dataurlnewwindow')
 
       // doc.save('table.pdf');
   
-    // this.router.navigate(['/bill_print']);
+    this.router.navigate(['/bill_print']);
   }
   callGST(event) {
     if(!isNaN(parseFloat(event.target.value.trim()))) {

@@ -6,6 +6,7 @@ import {ItemModel} from './models/item.model';
 
 @Injectable({providedIn: 'root'})
 export class OrdersService {
+    url = 'https://safe-dawn-47148.herokuapp.com/';
     private items = [];
     billingOrder;
     private itemsUpdated = new Subject<any>();
@@ -15,7 +16,7 @@ export class OrdersService {
     }
 
     addCustomer(customerData) {
-     return this.http.post('http://localhost:3000/api/customer', customerData).pipe(
+     return this.http.post(`${this.url}api/customer`, customerData).pipe(
          catchError(err => {
              return throwError(err.error);
          })
@@ -23,7 +24,7 @@ export class OrdersService {
 }
 
 getItems() {
- this.http.get<{ message: string; data: any }>('http://localhost:3000/api/items').pipe(map((items) => {
+ this.http.get<{ message: string; data: any }>(`${this.url}api/items`).pipe(map((items) => {
         return items.data.map(item => {
             return {
                 id: item._id,
@@ -42,7 +43,7 @@ getItemUpdateListener() {
   }
 
 addItem(itemsData) {
-return this.http.post('http://localhost:3000/api/item', itemsData).pipe(
+return this.http.post(`${this.url}api/item`, itemsData).pipe(
         catchError(err => {
             return throwError(err.error);
         })
