@@ -111,21 +111,21 @@
 }
 .challan-label {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
+    font-size: 18px;
 }
 #challan-input {
     margin-left: 10px;
     font-weight: bold;
     font-family: Helvetica;
     font-variant: small-caps;
-    font-size: 18px;
+    font-size: 21.5px;
 }
 .date-box {
     display: flex;
 }
 .date-label {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
+    font-size: 18px;
 }
 .date-input {
     margin-left: 10px;
@@ -160,7 +160,7 @@
 }
 .contact-box {
     border-bottom: 1px dotted midnightblue;
-    font-size: 18px;
+    font-size: 21.5px;
     font-family: Helvetica;
     font-weight: bold;
     margin-left: 8px;

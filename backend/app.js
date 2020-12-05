@@ -1,20 +1,22 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const Item = require('../src/app/database/items');
 const Customer = require('../src/app/database/customer');
 
-mongoose.connect('mongodb://localhost:27017/trendy')
+mongoose.connect('mongodb+srv://dbadm:hssqHgYajGmRg553@cluster0.evbjt.mongodb.net/trendy?retryWrites=true&w=majority')
 .then(() => {
     console.log('Connected to database!');
-}).catch(() => {
+}).catch((err) => {
+    console.log(err);
     console.log('Something went wrong!');
 });
 
 app.use(bodyParser.json());
-
+app.set('view engine', 'html');
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', "*");
     res.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
@@ -70,4 +72,5 @@ app.post('/api/item', (req, res, next) => {
         'message': 'Item added Successfully!'
     });
 });
+
 module.exports = app;

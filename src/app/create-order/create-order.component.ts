@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { OrdersService } from '../service/orders.service';
 import { FormControl, FormControlName } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-create-order',
@@ -30,6 +32,39 @@ export class CreateOrderComponent implements OnInit {
       return number; //new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(number);
     }
   }
+  downloadPdf() {
+   let head = [['Item', 'Size', 'Rate', 'Qty', 'Price']]
+
+  let data = [
+    [1, 'Finland', 7.632, 'Helsinki'],
+    [2, 'Norway', 7.594, 'Oslo'],
+    [3, 'Denmark', 7.555, 'Copenhagen'],
+    [4, 'Iceland', 7.495, 'Reykjavík'],
+    [5, 'Switzerland', 7.487, 'Bern'],
+    [9, 'Sweden', 7.314, 'Stockholm'],
+    [73, 'Belarus', 5.483, 'Minsk'],
+  ]
+  debugger;
+    var doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('My PDF Table', 11, 8);
+    doc.setFontSize(11);
+    doc.setTextColor(100);
+
+
+    (doc as any).autoTable({
+      head: head,
+      body: data,
+      theme: 'plain',
+      didDrawCell: data => {
+        console.log(data.column.index)
+      }
+    })
+
+    // Download PDF document  
+    // doc.save('table.pdf');
+  }
   saveAndPrintOrder() {
     let table = [];
     let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: '', table: [], billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
@@ -55,9 +90,9 @@ export class CreateOrderComponent implements OnInit {
       let itemType = (<HTMLSelectElement>tableRows[i].cells[0].children[0]).selectedOptions[0].innerText;
       let itemCustomInfo = (<HTMLElement>tableRows[i].cells[0].children[1]).innerText;
       let itemSize = tableRows[i].cells[1].innerText;
-      let itemRate = "₹ " + (<HTMLInputElement>tableRows[i].cells[2].children[0]).value;
+      let itemRate = "Rs. " + (<HTMLInputElement>tableRows[i].cells[2].children[0]).value;
       let itemQty = (<HTMLInputElement>tableRows[i].cells[3].children[0]).value;
-      let itemPrice = "₹ " + tableRows[i].cells[4].innerText;
+      let itemPrice = "Rs. " + tableRows[i].cells[4].innerText;
       row.item = itemType + ' ' + itemCustomInfo;
       row.size = itemSize;
       row.rate = itemRate;
@@ -65,11 +100,11 @@ export class CreateOrderComponent implements OnInit {
       row.price = itemPrice;
       table.push(row);
     }
-    let billingTotal = "₹ " + document.getElementById('bill-total').innerText; 
-    let gstRate = "₹ " + (<HTMLInputElement>document.getElementById('gst')).value.trim(); 
-    let transCharge = "₹ " + (<HTMLInputElement>document.getElementById('tr-charge')).value.trim(); 
-    let netAmount = "₹ " + document.getElementById('net-total').innerText; 
-    let discCost = "₹ " + this.discCost;
+    let billingTotal = "Rs. " + document.getElementById('bill-total').innerText; 
+    let gstRate = "Rs. " + (<HTMLInputElement>document.getElementById('gst')).value.trim(); 
+    let transCharge = "Rs. " + (<HTMLInputElement>document.getElementById('tr-charge')).value.trim(); 
+    let netAmount = "Rs. " + document.getElementById('net-total').innerText; 
+    let discCost = "Rs. " + this.discCost;
     let grNo = (<HTMLSelectElement>document.getElementById("gr-input")).value.trim();
 
     billPage.challanNumber = challanNumber;
@@ -86,7 +121,63 @@ export class CreateOrderComponent implements OnInit {
 
     console.log(billPage);
     this.orderService.billingOrder = billPage;
-    this.router.navigate(['/bill_print']);
+
+    let data = [];
+    let head = [['Sr No.', 'Item', 'Size', 'Rate', 'Qty', 'Price']];
+    billPage.table.forEach((i, index) => {
+      let arr = [];
+      let sr = index + 1 + '.';
+      let item = i.item;
+      let price = i.price;
+      let quantity = i.qty;
+      let rate = i.rate;
+      let size = i.size;
+      arr.push(sr);
+      arr.push(item);
+      arr.push(size);
+      arr.push(rate);
+      arr.push(quantity);
+      arr.push(price);
+      data.push(arr);
+    })
+    //   console.log(data);
+      const doc = new jsPDF('p','pt', 'a4');
+      doc.rect(20, 20, doc.internal.pageSize.width - 40, doc.internal.pageSize.height - 40, 'S');
+      var img = new Image()
+      img.src = 'assets/trendy.PNG'
+      doc.addImage(img, 'png', 10, 20, 100, 40, 'NONE', 'NONE', 10);
+      doc.setFontSize(22);
+      doc.text('ESTIMATE', 250, 45);
+      // doc.setFontSize(10);
+      doc.setFontSize(12);
+      doc.text('O - 0161-2704284', 470, 40);
+      doc.setFontSize(14);
+      doc.text('Challan No: ' + billPage.challanNumber, 30, 70);
+      doc.setFontSize(16);
+      var splitTitle = doc.splitTextToSize('Name and Address: ' +billPage.companyData, 300);
+      doc.text(30, 90, splitTitle);
+      doc.setFontSize(14);
+      doc.text(450, 90, 'Dated: ' +billPage.billDate);
+      // doc.text(billPage.gstbillNumber, 11,40);
+      doc.setTextColor(100);
+    
+      (doc as any).autoTable({
+        head: head,
+        body: data,
+        startY: 150,
+        theme: 'grid',
+        didDrawCell: data => {
+          console.log(data.column.index)
+        }
+      })
+      let finalY = doc.previousAutoTable.finalY; //this gives you the value of the end-y-axis-position of the previous autotable.
+      doc.text("Total", 12, finalY + 10); 
+      // Open PDF document in new tab
+      doc.output('dataurlnewwindow')
+
+      // doc.save('table.pdf');
+  
+    // this.router.navigate(['/bill_print']);
   }
   callGST(event) {
     if(!isNaN(parseFloat(event.target.value.trim()))) {
@@ -96,7 +187,7 @@ export class CreateOrderComponent implements OnInit {
       this.setNetTotal();
     } 
   }
-  callDisc() {
+  callDisc(event) {
     if(!isNaN(parseFloat(document.getElementById('disc').innerText.trim()))) {
       let disc = document.getElementById('disc').innerText.trim();
     //  event.target.innerText = disc;
@@ -153,7 +244,7 @@ export class CreateOrderComponent implements OnInit {
       
       }
       
-      this.callDisc();
+      this.callDisc(event);
     }
   }
   setNetTotal = function() {
