@@ -12,10 +12,11 @@ import 'jspdf-autotable';
   styleUrls: ['./create-order.component.css']
 })
 export class CreateOrderComponent implements OnInit {
+  challanNo: Number;
   gstCost: Number = 0.0;
   trCost: Number = 0.0;
   billTotal: Number = 0.0;
-  discCost: Number = 0.0;
+  discCost: number = 0.0;
   items = [];
   date = new FormControl(new Date());
   constructor(private http: HttpClient, private orderService: OrdersService, 
@@ -23,6 +24,9 @@ export class CreateOrderComponent implements OnInit {
 
   ngOnInit() {
     this.orderService.getItems();
+    this.orderService.getChallanNumber().subscribe(res => {
+       this.challanNo = res;   
+    });
      this.orderService.getItemUpdateListener().subscribe((items) => {
          this.items = items;
     });
@@ -69,6 +73,8 @@ export class CreateOrderComponent implements OnInit {
     let table = [];
     let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: '', table: [], billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
 
+    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: undefined, table: [], billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
+
     let challanNumber = document.getElementById("challan-input").innerText.trim();
     let gstbillNumber = document.getElementById("gst-input").innerText.trim();
     let companyData = (<HTMLSelectElement>document.getElementById("company-input")).value.trim();
@@ -90,7 +96,7 @@ export class CreateOrderComponent implements OnInit {
       let itemType = (<HTMLSelectElement>tableRows[i].cells[0].children[0]).selectedOptions[0].innerText;
       let itemCustomInfo = (<HTMLElement>tableRows[i].cells[0].children[1]).innerText;
       let itemSize = tableRows[i].cells[1].innerText;
-      let itemRate = "Rs. " + (<HTMLInputElement>tableRows[i].cells[2].children[0]).value;
+      let itemRate = (<HTMLInputElement>tableRows[i].cells[2].children[0]).value;
       let itemQty = (<HTMLInputElement>tableRows[i].cells[3].children[0]).value;
       let itemPrice = "Rs. " + tableRows[i].cells[4].innerText;
       row.item = itemType + ' ' + itemCustomInfo;
@@ -119,9 +125,24 @@ export class CreateOrderComponent implements OnInit {
     billPage.disc = discCost;
     billPage.grNo = grNo;
 
-    console.log(billPage);
-    this.orderService.billingOrder = billPage;
+    bill.challanNumber = challanNumber;
+    bill.gstbillNumber = gstbillNumber;
+    bill.companyData = companyData;
+    bill.billDate = new Date(billDate.split('-').reverse().join('-'));
+    bill.table = table;
+    bill.billingTotal = parseFloat(document.getElementById('bill-total').innerText);
+    bill.gstRate = parseFloat((<HTMLInputElement>document.getElementById('gst')).value.trim());
+    bill.transCharge = parseFloat((<HTMLInputElement>document.getElementById('tr-charge')).value.trim());
+    bill.netAmount = parseFloat(document.getElementById('net-total').innerText);
+    bill.disc = this.discCost;
+    bill.grNo = grNo;    
 
+    this.orderService.billingOrder = billPage;
+    
+    console.log(bill);
+    this.orderService.saveBill(bill).subscribe(res => {
+      console.log(res);
+    });
     let data = [];
     let head = [['Sr No.', 'Item', 'Size', 'Rate', 'Qty', 'Price']];
     billPage.table.forEach((i, index) => {
@@ -140,7 +161,7 @@ export class CreateOrderComponent implements OnInit {
       arr.push(price);
       data.push(arr);
     })
-    //   console.log(data);
+  
       const doc = new jsPDF('p','pt', 'a4');
       doc.rect(20, 20, doc.internal.pageSize.width - 40, doc.internal.pageSize.height - 40, 'S');
       var img = new Image()
@@ -254,7 +275,6 @@ export class CreateOrderComponent implements OnInit {
   }
   addRow() {  
     let table =  <HTMLTableElement>document.getElementById("order-table");
-    console.log(table);
     let row = table.insertRow(-1);
 
     let cell0 = row.insertCell(0);

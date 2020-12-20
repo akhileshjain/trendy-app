@@ -1,17 +1,14 @@
 <div class='outer-home'>
-	<div class="inner-home">
-			<h1 class='trendy-title'>
-					Welcome to {{ title }}
-				  </h1>				
-	</div>
+	<!-- <div class="inner-home">
+	</div> -->
 	<div class='tile'>
 		<div>
-			<button class='home-btn' routerLink='/add_customer'>Add customer</button>
-			<button class='home-btn' routerLink='/add_item'>Add Item</button>
+			<button class='home-btn' (click)='onAddCustomerClick()'>Add customer</button>
+			<button class='home-btn' (click)="onAddItemClick()">Add Item</button>
 		</div>
 		<div>
-			<button class='home-btn' routerLink='/bill_create'>Create Bill</button>
-			<button class='home-btn' routerLink='/show_orders'>Show Bills</button>
+			<button class='home-btn' (click)='onCreateBill()'>Create Bill</button>
+			<button class='home-btn' (click)='onShowOrders()'>Show Bills</button>
 		</div>
 	</div>
 

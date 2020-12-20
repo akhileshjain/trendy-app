@@ -1,0 +1,14 @@
+<div class='add-item-box'>
+    <div class='add-item-label'>Add Item</div>
+    <form [formGroup]="addItemForm" (ngSubmit)="onAddItem()">
+            <div class="form-group">
+                <mat-form-field class= "input-fields">
+                        <input matInput id="itemName" placeholder="Item Name" formControlName='itemName' class="form-control"/>        
+                        <mat-error *ngIf="this.addItemForm.get('itemName').hasError('required')">Please enter the Item name!</mat-error>
+                </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!addItemForm.valid">Add</button>
+            <button mat-raised-button color="alert" type="submit" [disabled]="!addItemForm.valid">Delete</button>
+        </form>    
+    </div>
+    

@@ -7,21 +7,6 @@
                     <mat-error *ngIf="this.addItemForm.get('itemName').hasError('required')">Please enter the Item name!</mat-error>
             </mat-form-field>
         </div>
-        <!-- <div class="form-group">
-            <mat-form-field class= "input-fields">
-                <input matInput  id="color" placeholder="Color" formControlName='color' class="form-control"/>
-                <mat-error *ngIf="this.addItemForm.get('color').hasError('required')">Please enter the item color!</mat-error>
-            </mat-form-field>
-        </div> -->
-        <!-- <div class="form-group">
-            <mat-form-field >
-                <mat-label>Size</mat-label>
-                <mat-select formControlName='size'>
-                    <mat-option *ngFor="let size of sizes" [value]="size.value">{{size.viewValue}}</mat-option>
-                </mat-select>         
-                <mat-error *ngIf="this.addItemForm.controls['size'].hasError('required')">Please enter the item color!</mat-error>
-            </mat-form-field>
-            </div> -->
         <button mat-raised-button color="primary" type="submit" [disabled]="!addItemForm.valid">Submit</button>
     </form>    
 </div>

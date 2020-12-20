@@ -9,19 +9,17 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatNativeDateModule, MatTableModule} from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import { Routes, RouterModule } from '@angular/router';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ShowOrdersComponent } from './show-orders/show-orders.component';
 import { PrintOrderComponent } from './print-order/print-order.component';
+import { ItemComponent } from './item/item.component';
+import { HeaderComponent } from './header/header.component';
 
-const appRoutes: Routes = [{path:'', component: HomepageComponent},
-                  {path:'add_customer', component: AddCustomerComponent},
-                  {path:'bill_create', component: CreateOrderComponent},
-                  {path:'bill_print', component: PrintOrderComponent},
-                  {path:'show_orders', component: ShowOrdersComponent},
-                  {path:'add_item', component: AddItemComponent}];
+// const appRoutes: Routes = [{path:'', component: HomepageComponent},
+                  
+//                   {path:'add_item', component: AddItemComponent}];
 
 @NgModule({
   declarations: [
@@ -31,7 +29,9 @@ const appRoutes: Routes = [{path:'', component: HomepageComponent},
     AddCustomerComponent,
     AddItemComponent,
     ShowOrdersComponent,
-    PrintOrderComponent
+    PrintOrderComponent,
+    ItemComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +46,7 @@ const appRoutes: Routes = [{path:'', component: HomepageComponent},
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes)
+    AppRoutingModule
   ],
   providers: [MatDatepickerModule],
   bootstrap: [AppComponent]

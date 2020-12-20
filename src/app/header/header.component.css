@@ -1,0 +1,14 @@
+.header {
+    background-color: black;
+    height: 70px;
+    color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: Roboto;
+    font-size: 23px;
+    padding: 0 10px;
+}
+.logo-label {
+    cursor: pointer;
+}

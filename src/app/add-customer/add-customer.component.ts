@@ -78,7 +78,7 @@ export class AddCustomerComponent implements OnInit {
     return null;
   }
   onAddCustomer() {
-    console.log(this.addCustomerForm);
+    // console.log(this.addCustomerForm);
 
     this.customerData.companyName = this.addCustomerForm.get('companyname').value;
     this.customerData.custName = this.addCustomerForm.get('custname').value;
