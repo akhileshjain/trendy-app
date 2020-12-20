@@ -8,7 +8,7 @@
                     <div class="challan-number-box">
                             <div class="challan-label" contenteditable="true" >Challan #</div>
                             <div id="challan-input" class="challan-input" contenteditable="false" [innerText]="challanNo"></div>
-                            <div class="challan-label" contenteditable="true" >GST #</div>
+                            <div class="challan-label" contenteditable="true" >Bill #</div>
                             <div id="gst-input" class="challan-input" contenteditable="true"></div>
                     </div>
                     <!-- <div class="date-box">      
@@ -80,7 +80,10 @@
                         <div class="add-total-row-one">Net Payable</div>  
                         <div contenteditable="true" id = "net-total" class="add-total-row-two"></div>
                     </div> 
+                    <div class="add-total-row-box">
+                        <div class="add-total-row-one">Total Qty</div>
+                        <div contenteditable="true" id="net-qty" class="add-total-row-two"></div>
+                    </div>
                 </div>
                 <button class="save-order-btn" (click)="saveAndPrintOrder()">Save and Print</button>
-                <!-- <button class="save-order-btn" (click)="downloadPdf()">Save and Print</button> -->
     </div>

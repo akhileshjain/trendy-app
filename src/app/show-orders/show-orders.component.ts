@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { OrdersService } from '../service/orders.service';
 
@@ -10,16 +10,15 @@ export interface bills {
   netAmount: number;
 }
 
-const BILLS_DATA: bills[] = [];
-
 @Component({
   selector: 'app-show-orders',
   templateUrl: './show-orders.component.html',
   styleUrls: ['./show-orders.component.css']
 })
-export class ShowOrdersComponent implements OnInit {
+export class ShowOrdersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ["challanNumber", "grNo", "companyData",  "billDate", "netAmount", "detail"];
   dataSource;
+  BILLS_DATA: bills[] = [];
 
 
   applyFilter(filterValue: string) {
@@ -42,12 +41,13 @@ export class ShowOrdersComponent implements OnInit {
            obj.billDate = '';
          }
           obj.netAmount = 'Rs.' + b.netAmount.toLocaleString();
-          BILLS_DATA.push(obj);
+          this.BILLS_DATA.push(obj);
         });
-
-        this.dataSource = new MatTableDataSource(BILLS_DATA);
+        this.dataSource = new MatTableDataSource(this.BILLS_DATA);
     });
 
   }
-
+ ngOnDestroy() {
+   this.dataSource = null;
+ }
 }

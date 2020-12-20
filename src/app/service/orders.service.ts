@@ -37,7 +37,7 @@ export class OrdersService {
   }
   getChallanNumber() {
     return this.http.get<any>(`${this.url}api/getLatestChallanNo`).pipe(map(res => {
-         return (res.data.challanNumber ? parseInt(res.data.challanNumber) + 1 : 1);
+         return (res.data ? parseInt(res.data.challanNumber) + 1 : 1);
     }),
       catchError((err) => {
         return throwError(err.error);

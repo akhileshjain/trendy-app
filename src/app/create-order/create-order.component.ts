@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { OrdersService } from '../service/orders.service';
 import { FormControl, FormControlName } from '@angular/forms';
 import { Router } from '@angular/router';
+import {formatterDate} from '../../common/util';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -36,44 +37,11 @@ export class CreateOrderComponent implements OnInit {
       return number; //new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(number);
     }
   }
-  downloadPdf() {
-   let head = [['Item', 'Size', 'Rate', 'Qty', 'Price']]
-
-  let data = [
-    [1, 'Finland', 7.632, 'Helsinki'],
-    [2, 'Norway', 7.594, 'Oslo'],
-    [3, 'Denmark', 7.555, 'Copenhagen'],
-    [4, 'Iceland', 7.495, 'Reykjavík'],
-    [5, 'Switzerland', 7.487, 'Bern'],
-    [9, 'Sweden', 7.314, 'Stockholm'],
-    [73, 'Belarus', 5.483, 'Minsk'],
-  ]
-  debugger;
-    var doc = new jsPDF();
-
-    doc.setFontSize(18);
-    doc.text('My PDF Table', 11, 8);
-    doc.setFontSize(11);
-    doc.setTextColor(100);
-
-
-    (doc as any).autoTable({
-      head: head,
-      body: data,
-      theme: 'plain',
-      didDrawCell: data => {
-        console.log(data.column.index)
-      }
-    })
-
-    // Download PDF document  
-    // doc.save('table.pdf');
-  }
   saveAndPrintOrder() {
     let table = [];
-    let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: '', table: [], billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
+    let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: '', table: [], netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
 
-    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: undefined, table: [], billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
+    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: undefined, table: [], netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
 
     let challanNumber = document.getElementById("challan-input").innerText.trim();
     let gstbillNumber = document.getElementById("gst-input").innerText.trim();
@@ -107,6 +75,7 @@ export class CreateOrderComponent implements OnInit {
       table.push(row);
     }
     let billingTotal = "Rs. " + document.getElementById('bill-total').innerText; 
+    let netQty = document.getElementById('net-qty').innerText; 
     let gstRate = "Rs. " + (<HTMLInputElement>document.getElementById('gst')).value.trim(); 
     let transCharge = "Rs. " + (<HTMLInputElement>document.getElementById('tr-charge')).value.trim(); 
     let netAmount = "Rs. " + document.getElementById('net-total').innerText; 
@@ -118,6 +87,7 @@ export class CreateOrderComponent implements OnInit {
     billPage.companyData = companyData;
     billPage.billDate = billDate;
     billPage.table = table;
+    billPage.netQty = netQty;
     billPage.billingTotal = billingTotal;
     billPage.gstRate = gstRate;
     billPage.transCharge = transCharge;
@@ -131,6 +101,7 @@ export class CreateOrderComponent implements OnInit {
     bill.billDate = new Date(billDate.split('-').reverse().join('-'));
     bill.table = table;
     bill.billingTotal = parseFloat(document.getElementById('bill-total').innerText);
+    bill.netQty = parseInt(document.getElementById('net-qty').innerText);
     bill.gstRate = parseFloat((<HTMLInputElement>document.getElementById('gst')).value.trim());
     bill.transCharge = parseFloat((<HTMLInputElement>document.getElementById('tr-charge')).value.trim());
     bill.netAmount = parseFloat(document.getElementById('net-total').innerText);
@@ -138,13 +109,20 @@ export class CreateOrderComponent implements OnInit {
     bill.grNo = grNo;    
 
     this.orderService.billingOrder = billPage;
-    
-    console.log(bill);
     this.orderService.saveBill(bill).subscribe(res => {
-      console.log(res);
+      alert('Bill saved!');
+      this.printBill(bill);
+      // this.router.navigate(['/bill_print']);
     });
+  }
+
+  printBill(billPage) {
+
     let data = [];
-    let head = [['Sr No.', 'Item', 'Size', 'Rate', 'Qty', 'Price']];
+    let consData = [];
+    let consArr = [];
+
+    let head = [['Sr No.', 'Item', 'Size', 'Rate (in Rs.)', 'Qty', 'Price (in Rs.)']];
     billPage.table.forEach((i, index) => {
       let arr = [];
       let sr = index + 1 + '.';
@@ -160,14 +138,15 @@ export class CreateOrderComponent implements OnInit {
       arr.push(quantity);
       arr.push(price);
       data.push(arr);
-    })
-  
+    });
+    data.push(['','', '', 'Total Qty', billPage.netQty, '', '']);
+
       const doc = new jsPDF('p','pt', 'a4');
       doc.rect(20, 20, doc.internal.pageSize.width - 40, doc.internal.pageSize.height - 40, 'S');
       var img = new Image()
       img.src = 'assets/trendy.PNG'
       doc.addImage(img, 'png', 10, 20, 100, 40, 'NONE', 'NONE', 10);
-      doc.setFontSize(22);
+      doc.setFontSize(20);
       doc.text('ESTIMATE', 250, 45);
       // doc.setFontSize(10);
       doc.setFontSize(12);
@@ -178,7 +157,7 @@ export class CreateOrderComponent implements OnInit {
       var splitTitle = doc.splitTextToSize('Name and Address: ' +billPage.companyData, 300);
       doc.text(30, 90, splitTitle);
       doc.setFontSize(14);
-      doc.text(450, 90, 'Dated: ' +billPage.billDate);
+      doc.text(440, 90, 'Dated: ' + formatterDate(billPage.billDate));
       // doc.text(billPage.gstbillNumber, 11,40);
       doc.setTextColor(100);
     
@@ -188,17 +167,66 @@ export class CreateOrderComponent implements OnInit {
         startY: 150,
         theme: 'grid',
         didDrawCell: data => {
-          console.log(data.column.index)
+
         }
       })
       let finalY = doc.previousAutoTable.finalY; //this gives you the value of the end-y-axis-position of the previous autotable.
-      doc.text("Total", 12, finalY + 10); 
-      // Open PDF document in new tab
-      // doc.output('dataurlnewwindow')
+      doc.text('GR #: ' + billPage.grNo, 40, finalY + 20);
 
-      // doc.save('table.pdf');
-  
-    this.router.navigate(['/bill_print']);
+      consArr.push('Total');
+      consArr.push('Rs.' + billPage.billingTotal.toFixed(2));
+      consData.push(consArr);
+      consArr = [];
+
+      // doc.text('Total: Rs.' + billPage.billingTotal.toFixed(2).toString(), 420, finalY + 20); 
+      if(billPage.disc) {
+        consArr.push('Discount');
+        consArr.push('Rs.' + billPage.disc.toFixed(2));
+        consData.push(consArr);
+        consArr = [];
+        // doc.text('Discount: Rs.' + billPage.disc.toFixed(2), 420, finalY + 40); 
+      }
+      if(billPage.gstRate) {
+        consArr.push('GST for bill # ' + billPage.gstbillNumber);
+        consArr.push('Rs.' +billPage.gstRate.toFixed(2));
+        consData.push(consArr);
+        consArr = [];
+        // doc.text('GST for bill # ' + billPage.gstbillNumber  + ': Rs.' + billPage.gstRate.toFixed(2), 380, finalY + 60); 
+      }
+      if(billPage.transCharge) {
+        consArr.push('Transport Charges');
+        consArr.push('Rs.' +billPage.transCharge.toFixed(2));
+        consData.push(consArr);
+        consArr = [];
+        // doc.text('Transport Charges: Rs.' + billPage.transCharge.toFixed(2), 400, finalY + 80);
+      }
+
+      consArr.push('Net Payable');
+      consArr.push('Rs.' + billPage.netAmount.toFixed(2));
+      consData.push(consArr);      
+      consArr = [];
+      
+      (doc as any).autoTable({
+        // head: head,
+        body: consData,
+        startY: finalY + 20,
+        tableWidth: '160',
+        margin: {'left': 400},
+        theme: 'plain',
+        columnStyles: {
+          0: {cellWidth: 80, fontSize: 12, fontStyle: 'bold'},
+          1: {cellWidth: 80, fontSize: 12},
+        },
+        didDrawCell: data => {
+        }
+      })
+
+      // doc.text('Net Payable: Rs.' +  billPage.netAmount.toFixed(2) , 400, finalY + 100); 
+      // Open PDF document in new tab
+      // doc.output('dataurlnewwindow');
+
+      doc.save(`challan_${billPage.challanNumber} .pdf`);
+
   }
   callGST(event) {
     if(!isNaN(parseFloat(event.target.value.trim()))) {
@@ -226,6 +254,7 @@ export class CreateOrderComponent implements OnInit {
   }
   callCalc(event) {
     let total = 0;
+    let totQty = 0;
     if (event.target.classList.contains('rate') === true) {
        if (!isNaN(parseFloat(event.target.value.trim()))) {
            let rate = parseFloat(event.target.value.trim());
@@ -241,7 +270,7 @@ export class CreateOrderComponent implements OnInit {
     } else if(event.target.classList.contains('qty') === true) {
       if(!isNaN(parseInt(event.target.value.trim()))) {
           let rate = parseFloat(event.target.parentNode.parentNode.cells[2].children[0].value.trim());
-          let qty = event.target.value.trim();
+          let qty = parseInt(event.target.value.trim());
           if(!isNaN(rate) && !isNaN(qty)) {
           let price = rate * qty;
           event.target.parentNode.parentNode.cells[4].innerText = price;
@@ -252,19 +281,24 @@ export class CreateOrderComponent implements OnInit {
     if((<HTMLTableElement>document.getElementById("order-table")).rows) {
       for(let i = 0; i < (<HTMLTableElement>document.getElementById("order-table")).rows.length; i++) {
           if(i !== 0) {
-              let ind_total = parseFloat((<HTMLTableElement>document.getElementById("order-table")).rows[i].cells[4].innerText.trim());
+              let tableElt = (<HTMLTableElement>document.getElementById('order-table'));
+              let ind_total = parseFloat(tableElt.rows[i].cells[4].innerText.trim());
+              let ind_qty = parseInt((<HTMLInputElement>tableElt.rows[i].cells[3].children[0]).value.trim());
               if(!isNaN(ind_total)) {
                 total = total + ind_total;
               }
+              if(!isNaN(ind_qty)) {
+                totQty = totQty + ind_qty;
+              }
+            }
           }
-      }
-      if(!isNaN(total)) {
-        let formattedTotal = this.getNumber(total);
-        this.billTotal = total;
-        (<HTMLTableElement>document.getElementById("bill-total")).innerText = formattedTotal; 
+          if(!isNaN(total)) {
+            let formattedTotal = this.getNumber(total);
+            this.billTotal = total;
+            (<HTMLTableElement>document.getElementById("bill-total")).innerText = formattedTotal; 
+            (<HTMLTableElement>document.getElementById("net-qty")).innerText = totQty.toString(); 
       
-      }
-      
+      }    
       this.callDisc(event);
     }
   }

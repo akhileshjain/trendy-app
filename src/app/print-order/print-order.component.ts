@@ -12,7 +12,6 @@ export class PrintOrderComponent implements OnInit {
 
   ngOnInit() {
     this.bill = this.orderService.billingOrder;
-    // console.log(this.bill);
   }
   getSerialNo(index) {
     return index + 1 + '.';
