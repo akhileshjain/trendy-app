@@ -14,7 +14,6 @@ import { AddItemComponent } from './add-item/add-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ShowOrdersComponent } from './show-orders/show-orders.component';
 import { PrintOrderComponent } from './print-order/print-order.component';
-import { ItemComponent } from './item/item.component';
 import { HeaderComponent } from './header/header.component';
 
 // const appRoutes: Routes = [{path:'', component: HomepageComponent},
@@ -30,7 +29,6 @@ import { HeaderComponent } from './header/header.component';
     AddItemComponent,
     ShowOrdersComponent,
     PrintOrderComponent,
-    ItemComponent,
     HeaderComponent
   ],
   imports: [
