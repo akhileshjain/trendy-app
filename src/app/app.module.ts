@@ -8,6 +8,7 @@ import { CreateOrderComponent } from './create-order/create-order.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatNativeDateModule, MatTableModule} from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { AddItemComponent } from './add-item/add-item.component';
@@ -34,7 +35,8 @@ import { HeaderComponent } from './header/header.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatButtonModule, 
+    MatButtonModule,
+    MatSnackBarModule, 
     MatSelectModule,
     MatTableModule,
     MatInputModule,

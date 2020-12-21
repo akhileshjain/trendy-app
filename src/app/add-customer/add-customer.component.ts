@@ -62,7 +62,6 @@ export class AddCustomerComponent implements OnInit {
       'custname': new FormControl('', Validators.required),
       'address': new FormControl(null),
       'city': new FormControl('', Validators.required),
-      'district': new FormControl('', Validators.required),
       'state': new FormControl('', Validators.required),
       'pin': new FormControl(null),
       'mobile': new FormControl('', [Validators.required, Validators.pattern("^([0|+[0-9]{1,5})?([7-9][0-9]{9})$"), this.validateMobileNo.bind(this)]),

@@ -3,14 +3,9 @@
     flex-direction: column;
     height:100%;
 }
-/* .inner-home {
-    display: flex;
-    justify-content: center;
-    height: 20%;
-} */
 .home-btn:hover {
-    background: white;
-    color:#19a79a;
+    background: #f582ae;
+    color: #001858;
 }
 .tile {
     display: flex;
@@ -24,11 +19,13 @@
     width: 150px;
     height: 150px;
     margin: 20px;
-    color: white;
-    border-radius: 50%;
+    color: #001858;
+    border-radius: 5%;
     background: transparent;
-    border: solid 1px white;
+    border: solid 3px #001858;
     outline: 0;
+    font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
 }
 .trendy-title {

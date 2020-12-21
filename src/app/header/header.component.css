@@ -1,13 +1,13 @@
 .header {
-    background-color: black;
+    background-color: #fef6e4;
     height: 70px;
-    color: white;
+    color: #001858;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     font-family: Roboto;
-    font-size: 23px;
-    padding: 0 10px;
+    font-size: 26px;
+    font-weight: bold;
 }
 .logo-label {
     cursor: pointer;
