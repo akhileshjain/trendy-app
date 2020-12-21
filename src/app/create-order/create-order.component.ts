@@ -5,6 +5,8 @@ import { SnackBarService } from '../shared/snack-bar/snack-bar/snack-bar.service
 import { FormControl, FormControlName } from '@angular/forms';
 import { Router } from '@angular/router';
 import {formatterDate} from '../../common/util';
+import {ThemePalette} from '@angular/material/core';
+import {ProgressSpinnerMode} from '@angular/material/progress-spinner';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -22,16 +24,22 @@ export class CreateOrderComponent implements OnInit {
   discCost: number = 0.0;
   items = [];
   date = new FormControl(new Date());
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'indeterminate';
+  dataLoading: boolean = false;
   constructor(private http: HttpClient, private orderService: OrdersService, 
     private router: Router, public snackBarService: SnackBarService
     ) { }
 
   ngOnInit() {
     this.orderService.getItems();
+    this.dataLoading = true;
     this.orderService.getChallanNumber().subscribe(res => {
-       this.challanNo = res;  
-      //  this.snackBarService.snackMessage('S', 'Challan Number Fetched'); 
+      this.dataLoading = false;
+      this.challanNo = res;  
+
     }, e => {
+      this.dataLoading = false;
       this.snackBarService.snackMessage('E', 'Issue fetching latest Challan Number')
     });
      this.orderService.getItemUpdateListener().subscribe((items) => {

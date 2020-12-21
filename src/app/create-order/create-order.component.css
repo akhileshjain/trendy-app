@@ -171,6 +171,14 @@ th, td{
 .add-row-btn:hover {
     opacity: 1;
 }
+.loading-indicator {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 40%;
+}
 .save-order-btn{
     color: #001858;
     font-weight: bold;

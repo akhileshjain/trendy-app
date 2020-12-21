@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { OrdersService } from '../service/orders.service';
-
+import {ThemePalette} from '@angular/material/core';
+import {ProgressSpinnerMode} from '@angular/material/progress-spinner';
 export interface bills {
   challanNumber: string;
   grNo: string,
@@ -18,6 +19,10 @@ export interface bills {
 export class ShowOrdersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ["challanNumber", "grNo", "companyData",  "billDate", "netAmount", "detail"];
   dataSource;
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'indeterminate';
+  dataLoading: boolean = false;
+
   BILLS_DATA: bills[] = [];
 
 
@@ -27,7 +32,9 @@ export class ShowOrdersComponent implements OnInit, OnDestroy {
   constructor(private ordersService: OrdersService) { }
 
   ngOnInit() {
+    this.dataLoading = true;
     this.ordersService.getAllBills().subscribe(res => {
+      this.dataLoading = false;
       res.data.map(b => {
          let obj = {"challanNumber": undefined, "grNo": undefined, "companyData": undefined,  "billDate": undefined,  "netAmount": undefined};      
          obj.challanNumber = b.challanNumber;

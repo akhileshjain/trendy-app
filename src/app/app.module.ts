@@ -7,6 +7,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatNativeDateModule, MatTableModule} from '@angular/material';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
@@ -17,10 +18,6 @@ import { ShowOrdersComponent } from './show-orders/show-orders.component';
 import { PrintOrderComponent } from './print-order/print-order.component';
 import { HeaderComponent } from './header/header.component';
 import { SnackBarComponent } from './shared/snack-bar/snack-bar/snack-bar.component';
-
-// const appRoutes: Routes = [{path:'', component: HomepageComponent},
-                  
-//                   {path:'add_item', component: AddItemComponent}];
 
 @NgModule({
   declarations: [
@@ -45,6 +42,7 @@ import { SnackBarComponent } from './shared/snack-bar/snack-bar/snack-bar.compon
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
