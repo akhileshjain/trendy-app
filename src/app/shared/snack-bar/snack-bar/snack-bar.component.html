@@ -1,0 +1,10 @@
+<div [ngSwitch]="valid">
+    <div *ngSwitchCase="'S'">
+        <!-- <img class="snack-img" src="assets/tick.png"> -->
+        <span id="snack-msg" style="text-align: center">{{message}}</span>
+    </div>
+    <div *ngSwitchCase="'E'" class="error">
+        <!-- <img class="snack-img" src="assets/Alert Red.png"> -->
+        <span id="snack-msg" style="text-align: center">{{message}}</span>
+    </div>
+</div>

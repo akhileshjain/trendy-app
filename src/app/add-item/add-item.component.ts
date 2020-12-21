@@ -3,11 +3,13 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 import {ItemModel} from '../service/models/item.model';
 import {OrdersService} from '../service/orders.service';
 import { HttpClient } from '@angular/common/http';
+import { SnackBarService } from '../shared/snack-bar/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-add-item',
   templateUrl: './add-item.component.html',
-  styleUrls: ['./add-item.component.css']
+  styleUrls: ['./add-item.component.css'],
+  providers: [SnackBarService]
 })
 export class AddItemComponent implements OnInit {
   addItemForm: FormGroup;
@@ -27,7 +29,7 @@ export class AddItemComponent implements OnInit {
     {value: '42', viewValue: '42'},
     {value: '44', viewValue: '44'},
   ];
-  constructor(private http: HttpClient, private ordersService: OrdersService) { 
+  constructor(private http: HttpClient, private ordersService: OrdersService, public snackBarService: SnackBarService) { 
 
   }
 
@@ -46,7 +48,9 @@ export class AddItemComponent implements OnInit {
     // this.itemsData.size = this.addItemForm.get('size').value;
 
     this.ordersService.addItem(this.itemsData).subscribe((res) => {
-      console.log(res);
+      this.snackBarService.snackMessage('S', 'Item Saved Successfully!');
+    }, err => {
+      this.snackBarService.snackMessage('E', 'Item save failed!');
     });
     
     this.addItemForm.get('itemName').setValue('');

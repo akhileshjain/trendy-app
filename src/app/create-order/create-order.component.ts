@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { OrdersService } from '../service/orders.service';
+import { SnackBarService } from '../shared/snack-bar/snack-bar/snack-bar.service';
 import { FormControl, FormControlName } from '@angular/forms';
 import { Router } from '@angular/router';
 import {formatterDate} from '../../common/util';
@@ -10,7 +11,8 @@ import 'jspdf-autotable';
 @Component({
   selector: 'app-create-order',
   templateUrl: './create-order.component.html',
-  styleUrls: ['./create-order.component.css']
+  styleUrls: ['./create-order.component.css'],
+  providers: [SnackBarService]
 })
 export class CreateOrderComponent implements OnInit {
   challanNo: Number;
@@ -21,12 +23,16 @@ export class CreateOrderComponent implements OnInit {
   items = [];
   date = new FormControl(new Date());
   constructor(private http: HttpClient, private orderService: OrdersService, 
-    private router: Router) { }
+    private router: Router, public snackBarService: SnackBarService
+    ) { }
 
   ngOnInit() {
     this.orderService.getItems();
     this.orderService.getChallanNumber().subscribe(res => {
-       this.challanNo = res;   
+       this.challanNo = res;  
+      //  this.snackBarService.snackMessage('S', 'Challan Number Fetched'); 
+    }, e => {
+      this.snackBarService.snackMessage('E', 'Issue fetching latest Challan Number')
     });
      this.orderService.getItemUpdateListener().subscribe((items) => {
          this.items = items;
@@ -110,9 +116,11 @@ export class CreateOrderComponent implements OnInit {
 
     this.orderService.billingOrder = billPage;
     this.orderService.saveBill(bill).subscribe(res => {
-      alert('Bill saved!');
+      this.snackBarService.snackMessage('S', 'Bill Saved successfully! Generating bill now...');
       this.printBill(bill);
       // this.router.navigate(['/bill_print']);
+    }, err => {
+      this.snackBarService.snackMessage('E', 'There was some problem saving the bill.');
     });
   }
 
@@ -178,27 +186,23 @@ export class CreateOrderComponent implements OnInit {
       consData.push(consArr);
       consArr = [];
 
-      // doc.text('Total: Rs.' + billPage.billingTotal.toFixed(2).toString(), 420, finalY + 20); 
       if(billPage.disc) {
         consArr.push('Discount');
         consArr.push('Rs.' + billPage.disc.toFixed(2));
         consData.push(consArr);
         consArr = [];
-        // doc.text('Discount: Rs.' + billPage.disc.toFixed(2), 420, finalY + 40); 
       }
       if(billPage.gstRate) {
         consArr.push('GST for bill # ' + billPage.gstbillNumber);
         consArr.push('Rs.' +billPage.gstRate.toFixed(2));
         consData.push(consArr);
         consArr = [];
-        // doc.text('GST for bill # ' + billPage.gstbillNumber  + ': Rs.' + billPage.gstRate.toFixed(2), 380, finalY + 60); 
       }
       if(billPage.transCharge) {
         consArr.push('Transport Charges');
         consArr.push('Rs.' +billPage.transCharge.toFixed(2));
         consData.push(consArr);
         consArr = [];
-        // doc.text('Transport Charges: Rs.' + billPage.transCharge.toFixed(2), 400, finalY + 80);
       }
 
       consArr.push('Net Payable');
@@ -221,7 +225,6 @@ export class CreateOrderComponent implements OnInit {
         }
       })
 
-      // doc.text('Net Payable: Rs.' +  billPage.netAmount.toFixed(2) , 400, finalY + 100); 
       // Open PDF document in new tab
       // doc.output('dataurlnewwindow');
 

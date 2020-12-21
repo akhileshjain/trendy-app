@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ShowOrdersComponent } from './show-orders/show-orders.component';
 import { PrintOrderComponent } from './print-order/print-order.component';
 import { HeaderComponent } from './header/header.component';
+import { SnackBarComponent } from './shared/snack-bar/snack-bar/snack-bar.component';
 
 // const appRoutes: Routes = [{path:'', component: HomepageComponent},
                   
@@ -30,7 +31,8 @@ import { HeaderComponent } from './header/header.component';
     AddItemComponent,
     ShowOrdersComponent,
     PrintOrderComponent,
-    HeaderComponent
+    HeaderComponent,
+    SnackBarComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,7 @@ import { HeaderComponent } from './header/header.component';
     AppRoutingModule
   ],
   providers: [MatDatepickerModule],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [SnackBarComponent]
 })
 export class AppModule { }
