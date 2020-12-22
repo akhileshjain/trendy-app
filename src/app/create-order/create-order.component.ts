@@ -19,6 +19,7 @@ import 'jspdf-autotable';
 export class CreateOrderComponent implements OnInit {
   challanNo: Number;
   gstCost: Number = 0.0;
+  embCharge: Number = 0.0;
   trCost: Number = 0.0;
   billTotal: Number = 0.0;
   discCost: number = 0.0;
@@ -53,9 +54,9 @@ export class CreateOrderComponent implements OnInit {
   }
   saveAndPrintOrder() {
     let table = [];
-    let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: '', table: [], netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
+    let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: '', table: [], embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
 
-    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: undefined, table: [], netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
+    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: undefined, table: [], embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
 
     let challanNumber = document.getElementById("challan-input").innerText.trim();
     let gstbillNumber = document.getElementById("gst-input").innerText.trim();
@@ -91,6 +92,8 @@ export class CreateOrderComponent implements OnInit {
     let billingTotal = "Rs. " + document.getElementById('bill-total').innerText; 
     let netQty = document.getElementById('net-qty').innerText; 
     let gstRate = "Rs. " + (<HTMLInputElement>document.getElementById('gst')).value.trim(); 
+    let embCharge = "Rs. " + (<HTMLInputElement>document.getElementById('embr')).value.trim(); 
+    let embBreakUp = (<HTMLSelectElement>document.getElementById("emb-input")).value.trim();
     let transCharge = "Rs. " + (<HTMLInputElement>document.getElementById('tr-charge')).value.trim(); 
     let netAmount = "Rs. " + document.getElementById('net-total').innerText; 
     let discCost = "Rs. " + this.discCost;
@@ -103,6 +106,8 @@ export class CreateOrderComponent implements OnInit {
     billPage.table = table;
     billPage.netQty = netQty;
     billPage.billingTotal = billingTotal;
+    billPage.embCharge = embCharge;
+    billPage.embBreakUp = embBreakUp;
     billPage.gstRate = gstRate;
     billPage.transCharge = transCharge;
     billPage.netAmount = netAmount;
@@ -117,19 +122,21 @@ export class CreateOrderComponent implements OnInit {
     bill.billingTotal = parseFloat(document.getElementById('bill-total').innerText);
     bill.netQty = parseInt(document.getElementById('net-qty').innerText);
     bill.gstRate = parseFloat((<HTMLInputElement>document.getElementById('gst')).value.trim());
+    bill.embCharge = parseFloat((<HTMLInputElement>document.getElementById('embr')).value.trim());
+    bill.embBreakUp = embBreakUp;
     bill.transCharge = parseFloat((<HTMLInputElement>document.getElementById('tr-charge')).value.trim());
     bill.netAmount = parseFloat(document.getElementById('net-total').innerText);
     bill.disc = this.discCost;
     bill.grNo = grNo;    
 
     this.orderService.billingOrder = billPage;
-    this.orderService.saveBill(bill).subscribe(res => {
-      this.snackBarService.snackMessage('S', 'Bill Saved successfully! Generating bill now...');
-      this.printBill(bill);
-      // this.router.navigate(['/bill_print']);
-    }, err => {
-      this.snackBarService.snackMessage('E', 'There was some problem saving the bill.');
-    });
+    this.printBill(bill);
+    // this.orderService.saveBill(bill).subscribe(res => {
+    //   this.snackBarService.snackMessage('S', 'Bill Saved successfully! Generating bill now...');
+    //   // this.router.navigate(['/bill_print']);
+    // }, err => {
+    //   this.snackBarService.snackMessage('E', 'There was some problem saving the bill.');
+    // });
   }
 
   printBill(billPage) {
@@ -187,7 +194,9 @@ export class CreateOrderComponent implements OnInit {
         }
       })
       let finalY = doc.previousAutoTable.finalY; //this gives you the value of the end-y-axis-position of the previous autotable.
-      doc.text('GR #: ' + billPage.grNo, 40, finalY + 20);
+      if(billPage.grNo) {
+        doc.text('GR #: ' + billPage.grNo, 40, finalY + 20);
+      }
 
       consArr.push('Total');
       consArr.push('Rs.' + billPage.billingTotal.toFixed(2));
@@ -197,6 +206,12 @@ export class CreateOrderComponent implements OnInit {
       if(billPage.disc) {
         consArr.push('Discount');
         consArr.push('Rs.' + billPage.disc.toFixed(2));
+        consData.push(consArr);
+        consArr = [];
+      }
+      if(billPage.embCharge) {
+        consArr.push('Embroidery. (' + billPage.embBreakUp + ')');
+        consArr.push('Rs.' + billPage.embCharge.toFixed(2));
         consData.push(consArr);
         consArr = [];
       }
@@ -222,14 +237,18 @@ export class CreateOrderComponent implements OnInit {
         // head: head,
         body: consData,
         startY: finalY + 20,
-        tableWidth: '160',
-        margin: {'left': 400},
+        tableWidth: '300',
+        styles: {
+          halign: 'right'
+       },
+        margin: {'left': 250},
         theme: 'plain',
         columnStyles: {
-          0: {cellWidth: 80, fontSize: 12, fontStyle: 'bold'},
+          0: {cellWidth: 220, fontSize: 12, fontStyle: 'bold'},
           1: {cellWidth: 80, fontSize: 12},
         },
-        didDrawCell: data => {
+        didDrawCell: (cell, data) => {
+          // cell.style.hAlign = 'right';
         }
       })
 
@@ -244,6 +263,14 @@ export class CreateOrderComponent implements OnInit {
       let gst = parseFloat(event.target.value.trim());
       event.target.value = gst;
       this.gstCost = gst;
+      this.setNetTotal();
+    } 
+  }
+  callEmbr(event) {
+    if(!isNaN(parseFloat(event.target.value.trim()))) {
+      let embCharge = parseFloat(event.target.value.trim());
+      event.target.value = embCharge;
+      this.embCharge = embCharge;
       this.setNetTotal();
     } 
   }
@@ -314,7 +341,7 @@ export class CreateOrderComponent implements OnInit {
     }
   }
   setNetTotal = function() {
-    this.netTotal = this.billTotal - this.discCost + this.gstCost + this.trCost;
+    this.netTotal = this.billTotal - this.discCost + this.embCharge + this.gstCost + this.trCost;
     let formattedNetTotal = this.getNumber(this.netTotal);
     (<HTMLTableElement>document.getElementById("net-total")).innerText = formattedNetTotal;    
   }

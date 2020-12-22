@@ -3,12 +3,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {CustomerModel} from '../service/models/customer.model';
 import {OrdersService} from '../service/orders.service';
+import { SnackBarService } from '../shared/snack-bar/snack-bar/snack-bar.service';
 
 @Injectable({providedIn: "root"})
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
-  styleUrls: ['./add-customer.component.css']
+  styleUrls: ['./add-customer.component.css'],
+  providers: [SnackBarService]
 })
 export class AddCustomerComponent implements OnInit {
   
@@ -52,22 +54,22 @@ export class AddCustomerComponent implements OnInit {
     {value: 'Lakshadweep', viewValue: 'Lakshadweep'},
     {value: 'Puducherry', viewValue: 'Puducherry'}
   ];
-  constructor(private http: HttpClient, private ordersService: OrdersService) { 
+  constructor(private http: HttpClient, private ordersService: OrdersService, private snackbarService: SnackBarService) { 
    
   } 
 
   ngOnInit() {
     this.addCustomerForm = new FormGroup({
-      'companyname': new FormControl('', Validators.required),
       'custname': new FormControl('', Validators.required),
-      'address': new FormControl(null),
-      'city': new FormControl('', Validators.required),
-      'state': new FormControl('', Validators.required),
-      'pin': new FormControl(null),
-      'mobile': new FormControl('', [Validators.required, Validators.pattern("^([0|+[0-9]{1,5})?([7-9][0-9]{9})$"), this.validateMobileNo.bind(this)]),
-      'phone': new FormControl(''), 
-      'email': new FormControl('', Validators.email),
-      'gstin': new FormControl(null)
+      'city': new FormControl('', Validators.required)
+      // 'companyname': new FormControl(''),
+      // 'address': new FormControl(null),
+      // 'state': new FormControl(''),
+      // 'pin': new FormControl(null),
+      // 'mobile': new FormControl('' , [Validators.pattern("^([0|+[0-9]{1,5})?([7-9][0-9]{9})$"), this.validateMobileNo.bind(this)]),
+      // 'phone': new FormControl(''), 
+      // 'email': new FormControl('' , Validators.email),
+      // 'gstin': new FormControl(null)
     });
   }
   validateMobileNo(control: FormControl): {[s: string]: boolean} {
@@ -79,20 +81,22 @@ export class AddCustomerComponent implements OnInit {
   onAddCustomer() {
     // console.log(this.addCustomerForm);
 
-    this.customerData.companyName = this.addCustomerForm.get('companyname').value;
     this.customerData.custName = this.addCustomerForm.get('custname').value;
-    this.customerData.address = this.addCustomerForm.get('address').value;
     this.customerData.city = this.addCustomerForm.get('city').value;
-    this.customerData.district = this.addCustomerForm.get('district').value;
-    this.customerData.state = this.addCustomerForm.get('state').value;
-    this.customerData.pin = this.addCustomerForm.get('pin').value;
-    this.customerData.mobile = this.addCustomerForm.get('mobile').value;
-    this.customerData.phone = this.addCustomerForm.get('phone').value;
-    this.customerData.email = this.addCustomerForm.get('email').value;
-    this.customerData.gstin = this.addCustomerForm.get('gstin').value;
+    // this.customerData.companyName = this.addCustomerForm.get('companyname').value;
+    // this.customerData.address = this.addCustomerForm.get('address').value;
+    // this.customerData.district = this.addCustomerForm.get('district').value;
+    // this.customerData.state = this.addCustomerForm.get('state').value;
+    // this.customerData.pin = this.addCustomerForm.get('pin').value;
+    // this.customerData.mobile = this.addCustomerForm.get('mobile').value;
+    // this.customerData.phone = this.addCustomerForm.get('phone').value;
+    // this.customerData.email = this.addCustomerForm.get('email').value;
+    // this.customerData.gstin = this.addCustomerForm.get('gstin').value;
 
     this.ordersService.addCustomer(this.customerData).subscribe((res) => {
-        console.log(res);
+        this.snackbarService.snackMessage('S', 'Customer Added Successfully!');
+    }, err => {
+        this.snackbarService.snackMessage('E', 'Customer could not be added successfully!');
     });
   } 
 }

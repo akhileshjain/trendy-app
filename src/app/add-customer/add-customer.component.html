@@ -3,25 +3,25 @@
     <form [formGroup]="addCustomerForm" (ngSubmit)="onAddCustomer()" class="add-cust-form">
         <div class="form-group">
             <mat-form-field class="input-fields">
-                    <input matInput placeholder="Company Name" id="companyname" formControlName='companyname' class="form-control"/>
-                    <mat-error *ngIf="addCustomerForm.get('companyname').hasError('required')">Please enter Company Name!</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-            <mat-form-field class="input-fields">
                     <input matInput placeholder="Customer Name" id="custname" formControlName='custname' class="form-control"/>    
                     <mat-error *ngIf="addCustomerForm.get('custname').hasError('required')">Please enter Customer Name!</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-             <mat-form-field class="input-fields">
-                <textarea matInput placeholder="Address" id="address" formControlName='address' class="form-control"></textarea>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field class="input-fields">
                     <input matInput placeholder="City" id="city" formControlName='city' class="form-control"/>
                     <mat-error *ngIf="addCustomerForm.get('city').hasError('required')">Please enter City!</mat-error>
+            </mat-form-field>
+        </div>
+        <!-- <div class="form-group">
+            <mat-form-field class="input-fields">
+                    <input matInput placeholder="Company Name" id="companyname" formControlName='companyname' class="form-control"/>
+                    <mat-error *ngIf="addCustomerForm.get('companyname').hasError('required')">Please enter Company Name!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+             <mat-form-field class="input-fields">
+                <textarea matInput placeholder="Address" id="address" formControlName='address' class="form-control"></textarea>
             </mat-form-field>
         </div>
         <div class="form-group">
@@ -62,7 +62,7 @@
             <mat-form-field class="input-fields">
                     <input matInput placeholder="GSTIN (optional)" id="gstin" formControlName='gstin' class="form-control"/>
             </mat-form-field>
-        </div>
+        </div> -->
         <button mat-raised-button color="primary" [disabled]="!addCustomerForm.valid" type="submit">Submit</button>
     </form>
 </div>

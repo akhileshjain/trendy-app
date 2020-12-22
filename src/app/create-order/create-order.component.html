@@ -58,6 +58,7 @@
             </tr>
             </table>
             <button (click)="addRow()" class="add-row-btn">Add Row</button>
+            
             <div class='add-total-box'>
                     <div class="add-total-row-box-1">
                         <div class="first_low_row">
@@ -73,13 +74,18 @@
                         <div contenteditable="true" id = "disc" class="add-total-row-two" (keyup)="callDisc($event)">0</div>
                     </div> 
                     <div class="add-total-row-box">
+                        <div contenteditable="true" class="add-total-row-one">Embroidery Charges</div>  
+                        <textarea id="emb-input" class="emb-input" contenteditable="true" rows="2" cols = "20" placeholder="Enter embr. charge breakup here"></textarea>
+                        <td ><input (change)="callEmbr($event)" id = "embr" class="add-total-row-two" min="0" value = "0" type="number"/></td> 
+                    </div> 
+                    <div class="add-total-row-box">
                         <div contenteditable="true" class="add-total-row-one">GST/Taxes</div>  
-                        <td ><input (change)="callGST($event)" id = "gst" class="add-total-row-two" value = "0" type="number"/></td> 
+                        <td ><input (change)="callGST($event)" id = "gst" class="add-total-row-two" min="0" value = "0" type="number"/></td> 
                         <!-- <div contenteditable="true" id = "gst" class="add-total-row-two" (keyup)="callGST($event)">0</div> -->
                     </div> 
                     <div class="add-total-row-box">
                         <div contenteditable="true" class="add-total-row-one">Freight Charges</div>  
-                        <td ><input (change)="callTransportationCharge($event)" id = "tr-charge" class="add-total-row-two" value = "0" type="number"/></td> 
+                        <td ><input (change)="callTransportationCharge($event)" id = "tr-charge" class="add-total-row-two" min="0" value = "0" type="number"/></td> 
 
                         <!-- <div contenteditable="true" id = "tr-charge" class="add-total-row-two" (keyup)="callTransportationCharge($event)">0</div> -->
                     </div> 
