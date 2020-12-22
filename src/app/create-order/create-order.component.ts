@@ -130,13 +130,13 @@ export class CreateOrderComponent implements OnInit {
     bill.grNo = grNo;    
 
     this.orderService.billingOrder = billPage;
-    this.printBill(bill);
-    // this.orderService.saveBill(bill).subscribe(res => {
-    //   this.snackBarService.snackMessage('S', 'Bill Saved successfully! Generating bill now...');
-    //   // this.router.navigate(['/bill_print']);
-    // }, err => {
-    //   this.snackBarService.snackMessage('E', 'There was some problem saving the bill.');
-    // });
+    this.orderService.saveBill(bill).subscribe(res => {
+      this.snackBarService.snackMessage('S', 'Bill Saved successfully! Generating bill now...');
+      this.printBill(bill);
+      // this.router.navigate(['/bill_print']);
+    }, err => {
+      this.snackBarService.snackMessage('E', 'There was some problem saving the bill.');
+    });
   }
 
   printBill(billPage) {
