@@ -14,7 +14,6 @@ export class SnackBarComponent implements OnInit {
   constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) {}
 
   ngOnInit() {
-    debugger;
     if (this.data.msgty === 'S') {
       this.valid = 'S';
       this.message = this.data.msgtext;

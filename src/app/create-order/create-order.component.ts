@@ -18,12 +18,14 @@ import 'jspdf-autotable';
 })
 export class CreateOrderComponent implements OnInit {
   challanNo: Number;
+  selectedCustomer: string;
   gstCost: Number = 0.0;
   embCharge: Number = 0.0;
   trCost: Number = 0.0;
   billTotal: Number = 0.0;
   discCost: number = 0.0;
   items = [];
+  customerList = [];
   date = new FormControl(new Date());
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'indeterminate';
@@ -35,6 +37,10 @@ export class CreateOrderComponent implements OnInit {
   ngOnInit() {
     this.orderService.getItems();
     this.dataLoading = true;
+    this.orderService.getCustomers().subscribe(res => {
+      this.dataLoading = false;
+      this.customerList = res;
+    });
     this.orderService.getChallanNumber().subscribe(res => {
       this.dataLoading = false;
       this.challanNo = res;  
@@ -54,13 +60,14 @@ export class CreateOrderComponent implements OnInit {
   }
   saveAndPrintOrder() {
     let table = [];
-    let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: '', table: [], embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
+    let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: '', table: [], embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
 
-    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', billDate: undefined, table: [], embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
+    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
 
     let challanNumber = document.getElementById("challan-input").innerText.trim();
     let gstbillNumber = document.getElementById("gst-input").innerText.trim();
-    let companyData = (<HTMLSelectElement>document.getElementById("company-input")).value.trim();
+    let companyData = (<HTMLSelectElement>document.getElementById("company-input")).innerText.trim();
+    let companyId = this.selectedCustomer;
     let billDate1 = (<HTMLInputElement>document.getElementById("date-input")).value;
     let month = billDate1.substr(0, billDate1.indexOf('/'));
     let year = billDate1.substr(billDate1.lastIndexOf('/')+1, billDate1.length - 1);
@@ -100,6 +107,7 @@ export class CreateOrderComponent implements OnInit {
     let grNo = (<HTMLSelectElement>document.getElementById("gr-input")).value.trim();
 
     billPage.challanNumber = challanNumber;
+    billPage.companyId = companyId;
     billPage.gstbillNumber = gstbillNumber;
     billPage.companyData = companyData;
     billPage.billDate = billDate;
@@ -117,6 +125,7 @@ export class CreateOrderComponent implements OnInit {
     bill.challanNumber = challanNumber;
     bill.gstbillNumber = gstbillNumber;
     bill.companyData = companyData;
+    bill.companyId = companyId;
     bill.billDate = new Date(billDate.split('-').reverse().join('-'));
     bill.table = table;
     bill.billingTotal = parseFloat(document.getElementById('bill-total').innerText);

@@ -20,6 +20,16 @@ export class OrdersService {
       })
     );
   }
+  getCustomers() {
+    let d = this.http.get<{data:any}>(`${this.url}api/customers`).pipe(
+      map(res => {
+        return res.data;
+      }), catchError((err) => {
+        return throwError(err);
+      })
+    );
+    return d;
+  }
   getAllBills() {
      return this.http.get<{data:any}>(`${this.url}api/bills`).pipe(
        catchError((err) => {

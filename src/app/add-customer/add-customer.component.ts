@@ -1,5 +1,5 @@
-import { Component, OnInit, Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, Injectable, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {CustomerModel} from '../service/models/customer.model';
 import {OrdersService} from '../service/orders.service';
@@ -13,7 +13,7 @@ import { SnackBarService } from '../shared/snack-bar/snack-bar/snack-bar.service
   providers: [SnackBarService]
 })
 export class AddCustomerComponent implements OnInit {
-  
+  @ViewChild(FormGroupDirective, {static: false}) formGroupDirective: FormGroupDirective;
   addCustomerForm: FormGroup;
   customerData =  new CustomerModel();
   states = [
@@ -79,8 +79,6 @@ export class AddCustomerComponent implements OnInit {
     return null;
   }
   onAddCustomer() {
-    // console.log(this.addCustomerForm);
-
     this.customerData.custName = this.addCustomerForm.get('custname').value;
     this.customerData.city = this.addCustomerForm.get('city').value;
     // this.customerData.companyName = this.addCustomerForm.get('companyname').value;
@@ -92,9 +90,10 @@ export class AddCustomerComponent implements OnInit {
     // this.customerData.phone = this.addCustomerForm.get('phone').value;
     // this.customerData.email = this.addCustomerForm.get('email').value;
     // this.customerData.gstin = this.addCustomerForm.get('gstin').value;
-
+    
     this.ordersService.addCustomer(this.customerData).subscribe((res) => {
-        this.snackbarService.snackMessage('S', 'Customer Added Successfully!');
+      this.snackbarService.snackMessage('S', 'Customer Added Successfully!');
+      this.formGroupDirective.resetForm();
     }, err => {
         this.snackbarService.snackMessage('E', 'Customer could not be added successfully!');
     });

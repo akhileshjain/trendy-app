@@ -31,7 +31,13 @@
             </div>
             <div class="second-line-box">
                     <div class="contact-box">
-                            <textarea id="company-input" class="company-input" contenteditable="true" rows="2" cols = "50" placeholder="Enter Company name here"></textarea>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Select a Customer</mat-label>
+                            <mat-select id="company-input" [(value)]="selectedCustomer">
+                              <mat-option *ngFor ="let customer of customerList" value={{customer._id}}>{{customer?.custName + ' - '+ customer?.city}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                            <!-- <textarea class="company-input" contenteditable="true" rows="2" cols = "50" placeholder="Enter Company name here"></textarea> -->
                     </div> 
             </div>
             <table class='billing-table' id="order-table">
