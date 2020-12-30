@@ -9,6 +9,7 @@ import {ThemePalette} from '@angular/material/core';
 import {ProgressSpinnerMode} from '@angular/material/progress-spinner';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-create-order',
@@ -363,9 +364,12 @@ export class CreateOrderComponent implements OnInit {
     let cell2 = row.insertCell(2);
     let cell3 = row.insertCell(3);
     let cell4 = row.insertCell(4);
+    let cell5 = row.insertCell(5);
     
     var selectList = document.createElement("select");
     var editableDiv = document.createElement("div");
+    var deleteBtn = document.createElement("button");
+
     editableDiv.style.minWidth = '340px';
     editableDiv.style.border = '1px solid #f582ae';
     selectList.id = "mySelect";
@@ -432,9 +436,22 @@ export class CreateOrderComponent implements OnInit {
     cell4.style.textAlign = 'center';
     cell4.classList.add('price');
 
+    deleteBtn.textContent = 'Delete Row';
+    cell5.appendChild(deleteBtn);
+    cell5.addEventListener('click', (event) => {
+       this.deleteRow(event);
+    })
+
     // cell6.style.border = '1px solid #DDD';
     // cell6.style.padding = '4px 0';
     // cell6.style.textAlign = 'center';
-
+  }
+  deleteRow(event) {
+    let elementToBeRemoved = event.target.parentElement.parentElement;
+    if(elementToBeRemoved.children[4].innerText.trim() == '' || elementToBeRemoved.children[4].innerText.trim() == 0) {
+      document.getElementById('order-table').removeChild(elementToBeRemoved);
+    } else {
+      this.snackBarService.snackMessage('E', `In order to delete this row, you need to update the price of this row to 0 first. Either set qty column or rate column to 0. `);
+    }
   }
 }

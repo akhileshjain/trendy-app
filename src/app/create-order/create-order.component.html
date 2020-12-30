@@ -47,6 +47,7 @@
                     <th id="rate-header">Rate</th>
                     <th id="qty-header">Quantity</th>
                     <th id="price-header">Price</th>
+                    <th></th>
                 </tr>
             <tr>
                     <td class="first-row">
@@ -61,6 +62,7 @@
                     <!-- <td (keyup)="callCalc($event)" class="row-style qty" contenteditable="true"></td> -->
                     <td ><input (change)="callCalc($event)" class="row-style qty" type="number"/></td>    
                     <td (keyup)="callCalc($event)" class="row-style price" ></td>
+                    <!-- <td><button (click)="deleteRow($event)">Delete Row</button></td> -->
             </tr>
             </table>
             <button (click)="addRow()" class="add-row-btn">Add Row</button>
