@@ -220,7 +220,8 @@ export class CreateOrderComponent implements OnInit {
         consArr = [];
       }
       if(billPage.embCharge) {
-        consArr.push('Embroidery. (' + billPage.embBreakUp + ')');
+        let embText = document.getElementById('emb-label').innerText;
+        consArr.push(embText + '(' + billPage.embBreakUp + ')');
         consArr.push('Rs.' + billPage.embCharge.toFixed(2));
         consData.push(consArr);
         consArr = [];

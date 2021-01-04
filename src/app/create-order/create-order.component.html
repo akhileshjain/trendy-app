@@ -82,7 +82,7 @@
                         <div contenteditable="true" id = "disc" class="add-total-row-two" (keyup)="callDisc($event)">0</div>
                     </div> 
                     <div class="add-total-row-box">
-                        <div contenteditable="true" class="add-total-row-one">Embroidery Charges</div>  
+                        <div contenteditable="true" id="emb-label" class="add-total-row-one">Embroidery Charges</div>  
                         <textarea id="emb-input" class="emb-input" contenteditable="true" rows="2" cols = "20" placeholder="Enter embr. charge breakup here"></textarea>
                         <td ><input (change)="callEmbr($event)" id = "embr" class="add-total-row-two" min="0" value = "0" type="number"/></td> 
                     </div> 
