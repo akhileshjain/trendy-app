@@ -5,6 +5,7 @@ import { AddItemComponent } from './add-item/add-item.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { PrintOrderComponent } from './print-order/print-order.component';
+import { ShowOrderComponent } from './show-order/show-order.component';
 import { ShowOrdersComponent } from './show-orders/show-orders.component';
 
 const appRoutes: Routes = [
@@ -14,6 +15,7 @@ const appRoutes: Routes = [
   {path:'bill_create', component: CreateOrderComponent},
   {path:'bill_print', component: PrintOrderComponent},
   {path:'show_orders', component: ShowOrdersComponent},
+  {path:'order/:order_id', component: ShowOrderComponent},
 
 ];
 

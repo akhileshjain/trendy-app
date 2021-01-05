@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { throwError, Subject } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import { ItemModel } from "./models/item.model";
@@ -30,6 +30,16 @@ export class OrdersService {
     );
     return d;
   }
+  getBill(orderId) {
+    const params = new HttpParams().append('orderId', orderId);
+    return this.http.get<{data:any}>(`${this.url}api/bill`, {params}).pipe(map(res => {
+        return res.data;
+    }),
+      catchError(err => {
+        return throwError(err);
+      }
+    ),
+    )};
   getAllBills() {
      return this.http.get<{data:any}>(`${this.url}api/bills`).pipe(
        catchError((err) => {

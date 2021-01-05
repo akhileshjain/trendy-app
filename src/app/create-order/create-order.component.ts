@@ -4,12 +4,14 @@ import { OrdersService } from '../service/orders.service';
 import { SnackBarService } from '../shared/snack-bar/snack-bar/snack-bar.service';
 import { FormControl, FormControlName } from '@angular/forms';
 import { Router } from '@angular/router';
-import {formatterDate} from '../../common/util';
+import {getPrintBillObject, printBill} from '../../common/print';
+import {getBillObject} from '../../common/util';
 import {ThemePalette} from '@angular/material/core';
 import {ProgressSpinnerMode} from '@angular/material/progress-spinner';
-import * as jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import { element } from 'protractor';
+// import {formatterDate} from '../../common/util';
+// import * as jsPDF from 'jspdf';
+// import 'jspdf-autotable';
+// import { element } from 'protractor';
 
 @Component({
   selector: 'app-create-order',
@@ -61,14 +63,20 @@ export class CreateOrderComponent implements OnInit {
   }
   saveAndPrintOrder() {
     let table = [];
-    let billPage = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: '', table: [], embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
-
-    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
-
     let challanNumber = document.getElementById("challan-input").innerText.trim();
     let gstbillNumber = document.getElementById("gst-input").innerText.trim();
     let companyData = (<HTMLSelectElement>document.getElementById("company-input")).innerText.trim();
     let companyId = this.selectedCustomer;
+    let netQty = parseInt(document.getElementById('net-qty').innerText.trim()); 
+    let billTotal = parseFloat(document.getElementById('bill-total').innerText);
+    let gstRate = parseFloat((<HTMLInputElement>document.getElementById('gst')).value.trim());
+    let transCharge = parseFloat((<HTMLInputElement>document.getElementById('tr-charge')).value.trim());
+    let netAmount = parseFloat(document.getElementById('net-total').innerText);
+    let embrCharge = parseFloat((<HTMLInputElement>document.getElementById('embr')).value.trim());
+    let embBreakUp = (<HTMLSelectElement>document.getElementById("emb-input")).value.trim();
+    let embText = document.getElementById('emb-label').innerText.trim();
+    let grNo = (<HTMLSelectElement>document.getElementById("gr-input")).value.trim();
+    var tableRows = (<HTMLTableElement>document.getElementById('order-table')).rows;
     let billDate1 = (<HTMLInputElement>document.getElementById("date-input")).value;
     let month = billDate1.substr(0, billDate1.indexOf('/'));
     let year = billDate1.substr(billDate1.lastIndexOf('/')+1, billDate1.length - 1);
@@ -79,9 +87,8 @@ export class CreateOrderComponent implements OnInit {
     if(parseInt(month) < 10) {
       month = '0'+ month;
     }
-    let billDate  = date + '-'+month+'-'+year;
+    let billDate  = new Date(year + '-' + month + '-' + date);
 
-    var tableRows = (<HTMLTableElement>document.getElementById('order-table')).rows;
     for(var i = 1; i < tableRows.length; i++) {
       let row = {item: '', size: '', rate: '', qty: '', price: ''};
       let itemType = (<HTMLSelectElement>tableRows[i].cells[0].children[0]).selectedOptions[0].innerText;
@@ -97,186 +104,24 @@ export class CreateOrderComponent implements OnInit {
       row.price = itemPrice;
       table.push(row);
     }
-    let billingTotal = "Rs. " + document.getElementById('bill-total').innerText; 
-    let netQty = document.getElementById('net-qty').innerText; 
-    let gstRate = "Rs. " + (<HTMLInputElement>document.getElementById('gst')).value.trim(); 
-    let embCharge = "Rs. " + (<HTMLInputElement>document.getElementById('embr')).value.trim(); 
-    let embBreakUp = (<HTMLSelectElement>document.getElementById("emb-input")).value.trim();
-    let transCharge = "Rs. " + (<HTMLInputElement>document.getElementById('tr-charge')).value.trim(); 
-    let netAmount = "Rs. " + document.getElementById('net-total').innerText; 
-    let discCost = "Rs. " + this.discCost;
-    let grNo = (<HTMLSelectElement>document.getElementById("gr-input")).value.trim();
+    let billObject = getBillObject(challanNumber, gstbillNumber, companyId, companyData, billDate, table,
+      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo);
 
-    billPage.challanNumber = challanNumber;
-    billPage.companyId = companyId;
-    billPage.gstbillNumber = gstbillNumber;
-    billPage.companyData = companyData;
-    billPage.billDate = billDate;
-    billPage.table = table;
-    billPage.netQty = netQty;
-    billPage.billingTotal = billingTotal;
-    billPage.embCharge = embCharge;
-    billPage.embBreakUp = embBreakUp;
-    billPage.gstRate = gstRate;
-    billPage.transCharge = transCharge;
-    billPage.netAmount = netAmount;
-    billPage.disc = discCost;
-    billPage.grNo = grNo;
+    let printObject = getPrintBillObject(challanNumber, gstbillNumber, companyData, billDate,table, embText, embrCharge,
+      embBreakUp, netQty, billTotal, gstRate, transCharge, netAmount, this.discCost, grNo);
 
-    bill.challanNumber = challanNumber;
-    bill.gstbillNumber = gstbillNumber;
-    bill.companyData = companyData;
-    bill.companyId = companyId;
-    bill.billDate = new Date(billDate.split('-').reverse().join('-'));
-    bill.table = table;
-    bill.billingTotal = parseFloat(document.getElementById('bill-total').innerText);
-    bill.netQty = parseInt(document.getElementById('net-qty').innerText);
-    bill.gstRate = parseFloat((<HTMLInputElement>document.getElementById('gst')).value.trim());
-    bill.embCharge = parseFloat((<HTMLInputElement>document.getElementById('embr')).value.trim());
-    bill.embBreakUp = embBreakUp;
-    bill.transCharge = parseFloat((<HTMLInputElement>document.getElementById('tr-charge')).value.trim());
-    bill.netAmount = parseFloat(document.getElementById('net-total').innerText);
-    bill.disc = this.discCost;
-    bill.grNo = grNo;    
-
-    this.orderService.billingOrder = billPage;
-    this.orderService.saveBill(bill).subscribe(res => {
-      this.snackBarService.snackMessage('S', 'Bill Saved successfully! Generating bill now...');
-      // this.router.navigate(['/bill_print']);
-      this.printBill(bill);
-    }, err => {
-      this.snackBarService.snackMessage('E', 'There was some problem saving the bill.');
-    });
-  }
-
-  printBill(billPage) {
-
-    let data = [];
-    let consData = [];
-    let consArr = [];
-
-    let head = [['Sr No.', 'Item', 'Size', 'Rate (in Rs.)', 'Qty', 'Price (in Rs.)']];
-    billPage.table.forEach((i, index) => {
-      let arr = [];
-      let sr = index + 1 + '.';
-      let item = i.item;
-      let price = i.price;
-      let quantity = i.qty;
-      let rate = i.rate;
-      let size = i.size;
-      arr.push(sr);
-      arr.push(item);
-      arr.push(size);
-      arr.push(rate);
-      arr.push(quantity);
-      arr.push(price);
-      data.push(arr);
-    });
-    data.push(['','', '', 'Total Qty', billPage.netQty, '', '']);
-
-      const doc = new jsPDF('p','pt', 'a4');
-      doc.rect(20, 20, doc.internal.pageSize.width - 40, doc.internal.pageSize.height - 40, 'S');
-      var img = new Image()
-      img.src = 'assets/trendy.PNG'
-      doc.addImage(img, 'png', 10, 20, 100, 40, 'NONE', 'NONE', 10);
-      doc.setFontSize(20);
-      doc.text('ESTIMATE', 250, 45);
-      // doc.setFontSize(10);
-      doc.setFontSize(12);
-      doc.text('O - 0161-2704284', 470, 40);
-      doc.setFontSize(14);
-      doc.text('Challan No: ' + billPage.challanNumber, 30, 70);
-      doc.setFontSize(16);
-      var splitTitle = doc.splitTextToSize('Name and Address: ' +billPage.companyData, 300);
-      doc.text(30, 90, splitTitle);
-      doc.setFontSize(14);
-      doc.text(440, 90, 'Dated: ' + formatterDate(billPage.billDate));
-      // doc.text(billPage.gstbillNumber, 11,40);
-      doc.setTextColor(100);
-    
-      (doc as any).autoTable({
-        head: head,
-        body: data,
-        startY: 150,
-        theme: 'grid',
-        didDrawCell: data => {
-
-        }
-      })
-      let finalY = doc.previousAutoTable.finalY; //this gives you the value of the end-y-axis-position of the previous autotable.
-      if(billPage.grNo) {
-        doc.text('GR #: ' + billPage.grNo, 40, finalY + 20);
-      }
-
-      consArr.push('Total');
-      consArr.push('Rs.' + billPage.billingTotal.toFixed(2));
-      consData.push(consArr);
-      consArr = [];
-
-      if(billPage.disc) {
-        consArr.push('Discount');
-        consArr.push('Rs.' + billPage.disc.toFixed(2));
-        consData.push(consArr);
-        consArr = [];
-      }
-      if(billPage.embCharge) {
-        let embText = document.getElementById('emb-label').innerText;
-        consArr.push(embText + '(' + billPage.embBreakUp + ')');
-        consArr.push('Rs.' + billPage.embCharge.toFixed(2));
-        consData.push(consArr);
-        consArr = [];
-      }
-      if(billPage.gstRate) {
-        consArr.push('GST for bill # ' + billPage.gstbillNumber);
-        consArr.push('Rs.' +billPage.gstRate.toFixed(2));
-        consData.push(consArr);
-        consArr = [];
-      }
-      if(billPage.transCharge) {
-        consArr.push('Transport Charges');
-        consArr.push('Rs.' +billPage.transCharge.toFixed(2));
-        consData.push(consArr);
-        consArr = [];
-      }
-
-      consArr.push('Net Payable');
-      consArr.push('Rs.' + billPage.netAmount.toFixed(2));
-      consData.push(consArr);      
-      consArr = [];
-      
-      (doc as any).autoTable({
-        // head: head,
-        body: consData,
-        startY: finalY + 20,
-        tableWidth: '300',
-        styles: {
-          halign: 'right'
-       },
-        margin: {'left': 250},
-        theme: 'plain',
-        columnStyles: {
-          0: {cellWidth: 220, fontSize: 12, fontStyle: 'bold'},
-          1: {cellWidth: 80, fontSize: 12},
-        },
-        didDrawCell: (cell, data) => {
-          // cell.style.hAlign = 'right';
-        }
-      })
-
-      doc.text('---------------------', 30, doc.previousAutoTable.finalY + 50);
-      doc.setFontSize(10);
-      doc.text('------------------------------', 450, doc.previousAutoTable.finalY + 50);
-      doc.setFontSize(10);
-      doc.text('(Customer Signature)', 30, doc.previousAutoTable.finalY + 60);
-      doc.setFontSize(10);
-      doc.text('(For Lavika Knitwears)', 450, doc.previousAutoTable.finalY + 60);
-      doc.setFontSize(10);
-
-      // Open PDF document in new tab
-      // doc.output('dataurlnewwindow');
-
-      doc.save(`challan_${billPage.challanNumber} .pdf`);
-
+    this.orderService.billingOrder = billObject;
+    if((!gstRate && gstbillNumber != '') || (gstRate && gstbillNumber == '')) {
+      this.snackBarService.snackMessage('E', 'If you are providing GST Amount, please enter Bill No. and vice-versa.');      
+    } else {
+      this.orderService.saveBill(billObject).subscribe(res => {
+        this.snackBarService.snackMessage('S', 'Bill Saved successfully! Generating bill now...');
+        printBill(printObject);
+        // this.router.navigate(['/bill_print']);
+      }, err => {
+        this.snackBarService.snackMessage('E', 'There was some problem saving the bill.');
+      });
+    }
   }
   callGST(event) {
     if(!isNaN(parseFloat(event.target.value.trim()))) {

@@ -18,6 +18,7 @@ import { ShowOrdersComponent } from './show-orders/show-orders.component';
 import { PrintOrderComponent } from './print-order/print-order.component';
 import { HeaderComponent } from './header/header.component';
 import { SnackBarComponent } from './shared/snack-bar/snack-bar/snack-bar.component';
+import { ShowOrderComponent } from './show-order/show-order.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { SnackBarComponent } from './shared/snack-bar/snack-bar/snack-bar.compon
     ShowOrdersComponent,
     PrintOrderComponent,
     HeaderComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    ShowOrderComponent
   ],
   imports: [
     BrowserModule,

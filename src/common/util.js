@@ -1,3 +1,35 @@
+export const getBillObject = (challanNumber, gstbillNumber, companyId, companyData, billDate, table,
+    netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, discCost, grNo) => {
+
+    let billObject = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: '', table: [], embText:'', embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
+
+    let rupeeSymbol = 'Rs.';
+
+    billObject.challanNumber = challanNumber;
+    billObject.gstbillNumber = gstbillNumber;
+    billObject.companyId = companyId;
+    billObject.companyData = companyData;
+    billObject.billDate = billDate;
+    billObject.table = table;
+    billObject.netQty = netQty;
+    // billObject.billingTotal = rupeeSymbol + billTotal;
+    billObject.billingTotal = billTotal;
+    // billObject.embCharge = rupeeSymbol + embrCharge;
+    billObject.embText = embText;
+    billObject.embCharge = embrCharge;
+    billObject.embBreakUp = embBreakUp;
+    // billObject.gstRate = rupeeSymbol + gstRate;
+    billObject.gstRate = gstRate;
+    // billObject.transCharge = rupeeSymbol + transCharge;
+    billObject.transCharge = transCharge;
+    // billObject.netAmount = rupeeSymbol + netAmount;
+    billObject.netAmount = netAmount;
+    // billObject.disc = rupeeSymbol + discCost;
+    billObject.disc = discCost;
+    billObject.grNo = grNo;
+        
+    return billObject;
+}
 export const formatterDate = (jsDate) => {
 
      let date = jsDate.getDate();

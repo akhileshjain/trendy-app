@@ -1,0 +1,49 @@
+<div class="parent-box">
+    <div class='error-box' *ngIf = !billExists>
+        Sorry! Order for this challan Number does not exist!
+    </div>
+    <div *ngIf= "billExists" class="content-box">
+        <div class="challan-box">
+            <div class="bill-labels">Challan Number - </div> 
+            <div>{{challanNumber}}</div>
+        </div>
+        <div class="row-2">
+            <div class="company-box">
+                <div class="bill-labels">Name and Address - </div>
+                <div>{{companyData}}</div>
+            </div>
+            <div class="date-box">
+                <div class="bill-labels">Bill Date - </div>
+                <div>{{billDate}}</div>
+            </div>
+        </div>
+        <table class="billing-table">
+                <thead class="bill-table-header">
+                    <td class="row-cell">Item</td>
+                    <td class="row-cell">Size</td>
+                    <td class="row-cell">Rate (in Rs.)</td>
+                    <td class="row-cell">Qty.</td>
+                    <td class="row-cell">Price</td>
+                </thead>
+                <tr class="bill-row" *ngFor="let obj of items">
+                    <td class="row-cell">{{obj.item}}</td>
+                    <td class="row-cell">{{obj.size}}</td>
+                    <td class="row-cell">{{obj.rate}}</td>
+                    <td class="row-cell">{{obj.qty}}</td>
+                    <td class="row-cell">{{obj.price}}</td>
+                </tr>
+        </table>
+        <div class="bill-labels">{{grNo}}</div>
+        <div class="total-particulars">
+            <div class="bill-labels">Total Qty: {{totalQty}}</div>
+            <div class="bill-labels">Total: Rs.{{billingTotal}}</div>
+            <div *ngIf="embCharge" class="bill-labels">{{embText}} for {{embBreakUp}} Rs.{{embCharge}}</div>
+            <div class="bill-labels">GST for Bill # {{gstBillNumber}} : Rs.{{gstRate}}</div>
+            <div *ngIf="transCharge" class="bill-labels">Transport Charges: Rs.{{transCharge}}</div>
+            <div class="bill-labels">Net Payable: Rs.{{netAmount}}</div>
+        </div>
+        <div class="print-btn-class">
+            <button class="print-button" (click)="printCurrentBill()">Print Bill</button>
+        </div>
+    </div>
+</div>

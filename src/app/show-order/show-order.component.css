@@ -1,0 +1,84 @@
+.parent-box {
+    overflow: auto;
+    font-family:"Open Sans", sans-serif;
+    height: calc(100vh - 70px);
+}
+.content-box {
+    padding: 1rem;
+}
+.challan-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.row-2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.bill-labels {
+    font-weight: bold;
+}
+.company-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.date-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.billing-table {
+    width: 100%;
+    border: 1px solid #172c66;
+    margin: 1rem 0.5rem;
+    border-collapse: collapse;
+    font-family:"Open Sans", sans-serif;
+    font-size: 16px;
+}
+.billing-table>thead {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid black;
+}
+.bill-table-header {
+    background: burlywood;
+}
+.billing-table>tr {
+    text-align: center;
+    border-bottom: 1px solid black;
+    padding: 5px;
+}
+.total-particulars {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+.row-cell {
+    border-right: 1px solid black;
+    padding: 4px;
+}
+.bill-row:nth-child(2n) {
+    background-color:white;
+}
+.print-btn-class {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.print-button {
+    text-align: center;
+}
+.error-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 20px;
+}
