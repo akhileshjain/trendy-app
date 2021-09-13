@@ -120,15 +120,15 @@ export const printBill = (billPage) => {
         (doc).autoTable({
         body: consData,
         startY: finalY + 20,
-        tableWidth: '300',
+        tableWidth: '320',
         styles: {
             halign: 'right'
         },
-        margin: {'left': 250},
+        margin: {'left': 225},
         theme: 'plain',
         columnStyles: {
             0: {cellWidth: 220, fontSize: 12, fontStyle: 'bold'},
-            1: {cellWidth: 80, fontSize: 12},
+            1: {cellWidth: 100, fontSize: 12},
         },
         didDrawCell: (cell, data) => {
         }
