@@ -12,7 +12,6 @@ export const getBillObject = (challanNumber, gstbillNumber, companyId, companyDa
     billObject.billDate = billDate;
     billObject.table = table;
     billObject.netQty = netQty;
-    // billObject.billingTotal = rupeeSymbol + billTotal;
     billObject.billingTotal = billTotal;
     // billObject.embCharge = rupeeSymbol + embrCharge;
     billObject.embText = embText;
@@ -30,6 +29,31 @@ export const getBillObject = (challanNumber, gstbillNumber, companyId, companyDa
         
     return billObject;
 }
+
+export const getCashOrderObject = (cashOrderNumber, companyId, companyData, cashOrderDate, table,
+    netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, discCost, grNo) => {
+
+    let cashOrderObject = {cashOrderNumber: '', companyData: '', companyId: '', cashOrderDate: '', table: [], embText:'', embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
+
+    cashOrderObject.cashOrderNumber = cashOrderNumber;
+    cashOrderObject.companyId = companyId;
+    cashOrderObject.companyData = companyData;
+    cashOrderObject.cashOrderDate = cashOrderDate;
+    cashOrderObject.table = table;
+    cashOrderObject.netQty = netQty;
+    cashOrderObject.billingTotal = billTotal;
+    cashOrderObject.embText = embText;
+    cashOrderObject.embCharge = embrCharge;
+    cashOrderObject.embBreakUp = embBreakUp;
+    cashOrderObject.gstRate = gstRate;
+    cashOrderObject.transCharge = transCharge;
+    cashOrderObject.netAmount = netAmount;
+    cashOrderObject.disc = discCost;
+    cashOrderObject.grNo = grNo;
+        
+    return cashOrderObject;
+}
+
 export const formatterDate = (jsDate) => {
 
      let date = jsDate.getDate();

@@ -19,12 +19,18 @@ import { PrintOrderComponent } from './print-order/print-order.component';
 import { HeaderComponent } from './header/header.component';
 import { SnackBarComponent } from './shared/snack-bar/snack-bar/snack-bar.component';
 import { ShowOrderComponent } from './show-order/show-order.component';
+import { CreateCashOrderComponent } from './create-cash-order/create-cash-order.component';
+import { ShowCashOrdersComponent } from './show-cash-orders/show-cash-orders.component';
+import { ShowCashOrderComponent } from './show-cash-order/show-cash-order.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     CreateOrderComponent,
+    CreateCashOrderComponent, 
+    ShowCashOrdersComponent,
+    ShowCashOrderComponent,
     AddCustomerComponent,
     AddItemComponent,
     ShowOrdersComponent,

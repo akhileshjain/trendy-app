@@ -39,9 +39,26 @@ export class OrdersService {
         return throwError(err);
       }
     ),
-    )};
+  )};
+  getCashOrder(orderId) {
+    const params = new HttpParams().append('orderId', orderId);
+    return this.http.get<{data:any}>(`${this.url}api/cashorder`, {params}).pipe(map(res => {
+        return res.data;
+    }),
+      catchError(err => {
+        return throwError(err);
+      }
+    ),
+  )};
   getAllBills() {
      return this.http.get<{data:any}>(`${this.url}api/bills`).pipe(
+       catchError((err) => {
+         return throwError(err.error);
+       })
+     );
+  }
+  getAllCashOrders() {
+     return this.http.get<{data:any}>(`${this.url}api/cashorders`).pipe(
        catchError((err) => {
          return throwError(err.error);
        })
@@ -55,6 +72,13 @@ export class OrdersService {
         })
       );
   }
+  saveCashOrder(cashOrderObj) {
+      return this.http.post(`${this.url}api/cashorder`, cashOrderObj).pipe(
+        catchError((err) => {
+          return throwError(err.error);
+        })
+      );
+  }
   getChallanNumber() {
     return this.http.get<any>(`${this.url}api/getLatestChallanNo`).pipe(map(res => {
          return (res.data ? parseInt(res.data.challanNumber) + 1 : 1);
@@ -63,6 +87,15 @@ export class OrdersService {
         return throwError(err.error);
       })
     )
+  }
+  getCashOrderNo() {
+    return this.http.get<any>(`${this.url}api/getLatestCashOrderNo`).pipe(map(res => {
+      return (res.data ? parseInt(res.data.cashOrderNumber) + 1 : 1);
+    }),
+   catchError((err) => {
+     return throwError(err.error);
+   })
+ )
   }
   getItems() {
     this.http.get<{ message: string; data: any }>(`${this.url}api/items`)

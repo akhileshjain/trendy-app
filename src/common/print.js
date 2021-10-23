@@ -24,6 +24,27 @@ export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, bi
 
     return bill;
 }
+export const getPrintCashOrderObject = (cashOrderNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, transCharge, netAmount, disc, grNo) => {
+    let cashOrder = {cashOrderNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
+
+    cashOrder.cashOrderNumber = cashOrderNumber;
+    cashOrder.companyData = companyData;
+    cashOrder.billDate = billDate;
+    cashOrder.table = items;
+    cashOrder.embText = embText;
+    cashOrder.embCharge = embCharge;
+    cashOrder.embBreakUp = embBreakUp;
+    cashOrder.netQty = totalQty;
+    cashOrder.billingTotal = billingTotal;
+    cashOrder.netQty = totalQty;
+    cashOrder.gstRate = gstRate;
+    cashOrder.transCharge = transCharge;
+    cashOrder.netAmount = netAmount;
+    cashOrder.disc = disc;
+    cashOrder.grNo = grNo;
+
+    return cashOrder;
+}
 
 export const printBill = (billPage) => {
     let data = [];
@@ -60,7 +81,11 @@ export const printBill = (billPage) => {
         doc.setFontSize(12);
         doc.text('O - 0161-2704284', 470, 40);
         doc.setFontSize(14);
-        doc.text('Challan No: ' + billPage.challanNumber, 30, 70);
+        if(billPage.challanNumber) {
+            doc.text('Challan No: ' + billPage.challanNumber, 30, 70);
+        } else {
+            doc.text('Cash Order No: ' + billPage.cashOrderNumber, 30, 70);
+        }
         doc.setFontSize(16);
         var splitTitle = doc.splitTextToSize('Name and Address: ' +billPage.companyData, 300);
         doc.text(30, 90, splitTitle);
@@ -145,7 +170,10 @@ export const printBill = (billPage) => {
 
         // Open PDF document in new tab
         // doc.output('dataurlnewwindow');
-
-        doc.save(`challan_${billPage.challanNumber} .pdf`);
+        if(billPage.challanNumber) {
+            doc.save(`challan_${billPage.challanNumber} .pdf`);
+        } else {
+            doc.save(`cashOrder_${billPage.cashOrderNumber} .pdf`);
+        }
       
 }

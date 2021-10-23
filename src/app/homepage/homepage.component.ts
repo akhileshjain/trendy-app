@@ -25,4 +25,10 @@ export class HomepageComponent implements OnInit {
   onShowOrders() {
     this.router.navigate(['show_orders']);
   }
+  onCreateCashOrder() {
+    this.router.navigate(['add_cash_order']);
+  }
+  onShowCashOrders() {
+    this.router.navigate(['show_cash_orders']);
+  }
 }
