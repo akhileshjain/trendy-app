@@ -72,6 +72,13 @@ export class OrdersService {
         })
       );
   }
+  deleteBill(bill) {
+    return this.http.post(`${this.url}api/deleteBill`, bill).pipe(
+      catchError((err) => {
+        return throwError(err.error);
+      })
+    )
+  }
   saveCashOrder(cashOrderObj) {
       return this.http.post(`${this.url}api/cashorder`, cashOrderObj).pipe(
         catchError((err) => {

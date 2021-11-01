@@ -9,6 +9,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatNativeDateModule, MatTableModule} from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatInputModule} from '@angular/material/input';
+import { MatRadioModule, MatIconModule } from '@angular/material';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
@@ -22,6 +23,9 @@ import { ShowOrderComponent } from './show-order/show-order.component';
 import { CreateCashOrderComponent } from './create-cash-order/create-cash-order.component';
 import { ShowCashOrdersComponent } from './show-cash-orders/show-cash-orders.component';
 import { ShowCashOrderComponent } from './show-cash-order/show-cash-order.component';
+import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
+import { HTMLSanitizePipe } from './shared/htmlsanitize/html-sanitize.pipe';
+import { EditOrderComponent } from './edit-order/edit-order.component';
 
 @NgModule({
   declarations: [
@@ -31,13 +35,16 @@ import { ShowCashOrderComponent } from './show-cash-order/show-cash-order.compon
     CreateCashOrderComponent, 
     ShowCashOrdersComponent,
     ShowCashOrderComponent,
+    EditOrderComponent,
     AddCustomerComponent,
     AddItemComponent,
     ShowOrdersComponent,
     PrintOrderComponent,
     HeaderComponent,
     SnackBarComponent,
-    ShowOrderComponent
+    ShowOrderComponent,
+    ConfirmationDialogComponent,
+    HTMLSanitizePipe
   ],
   imports: [
     BrowserModule,
@@ -45,7 +52,9 @@ import { ShowCashOrderComponent } from './show-cash-order/show-cash-order.compon
     MatButtonModule,
     MatSnackBarModule, 
     MatSelectModule,
+    MatRadioModule,
     MatTableModule,
+    MatIconModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -58,6 +67,6 @@ import { ShowCashOrderComponent } from './show-cash-order/show-cash-order.compon
   ],
   providers: [MatDatepickerModule],
   bootstrap: [AppComponent],
-  entryComponents: [SnackBarComponent]
+  entryComponents: [SnackBarComponent, ConfirmationDialogComponent]
 })
 export class AppModule { }

@@ -1,15 +1,18 @@
 <div class="loading-indicator" *ngIf="dataLoading">
-    <mat-progress-spinner
-    class="example-margin"
-        [color]="color"
-        [mode]="mode">
-    </mat-progress-spinner>
+  <mat-progress-spinner
+  class="example-margin"
+  [color]="color"
+  [mode]="mode">
+</mat-progress-spinner>
 </div>
-<mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-      </mat-form-field>
+
+<div class="order-table">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+
       
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource"  class="mat-elevation-z8">
 
         <!-- Challan No. Column -->
         <ng-container matColumnDef="challanNumber">
@@ -43,12 +46,22 @@
         </ng-container>
 
         <!-- Details Column -->
-        <ng-container matColumnDef="detail">
+        <ng-container matColumnDef="open">
           <th mat-header-cell *matHeaderCellDef> Details </th>
-          <td mat-cell *matCellDef="let element"> <a href="/order/{{element.challanNumber}}" >Open Details</a></td>
+          <td mat-cell *matCellDef="let element"> <a href="/order/{{element.challanNumber}}/open" ><mat-icon>info_outline</mat-icon></a></td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Details </th>
+          <td mat-cell *matCellDef="let element"> <a href="/order/{{element.challanNumber}}/edit" >Edit </a></td>
+        </ng-container> -->
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef> Details </th>
+          <td mat-cell *matCellDef="let element"><button (click)= "deleteOrder(element.challanNumber)">Delete</button>  </td>
         </ng-container>
       
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
       
