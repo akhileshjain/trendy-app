@@ -63,7 +63,7 @@ export class CreateOrderComponent implements OnInit {
   }
   saveAndPrintOrder() {
     let table = [];
-    let challanNumber = document.getElementById("challan-input").innerText.trim();
+    let challanNumber = parseInt(document.getElementById("challan-input").innerText.trim());
     let gstbillNumber = document.getElementById("gst-input").innerText.trim();
     let companyData = (<HTMLSelectElement>document.getElementById("company-input")).innerText.trim();
     let companyId = this.selectedCustomer;
@@ -75,6 +75,7 @@ export class CreateOrderComponent implements OnInit {
     let embrCharge = parseFloat((<HTMLInputElement>document.getElementById('embr')).value.trim());
     let embBreakUp = (<HTMLSelectElement>document.getElementById("emb-input")).value.trim();
     let embText = document.getElementById('emb-label').innerText.trim();
+    let freightText = document.getElementById('freight-label').innerText.trim();
     let grNo = (<HTMLSelectElement>document.getElementById("gr-input")).value.trim();
     var tableRows = (<HTMLTableElement>document.getElementById('order-table')).rows;
     let billDate1 = (<HTMLInputElement>document.getElementById("date-input")).value;
@@ -108,7 +109,7 @@ export class CreateOrderComponent implements OnInit {
       netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo);
 
     let printObject = getPrintBillObject(challanNumber, gstbillNumber, companyData, billDate,table, embText, embrCharge,
-      embBreakUp, netQty, billTotal, gstRate, transCharge, netAmount, this.discCost, grNo);
+      embBreakUp, netQty, billTotal, gstRate, freightText, transCharge, netAmount, this.discCost, grNo);
 
     this.orderService.billingOrder = billObject;
     if((!gstRate && gstbillNumber != '') || (gstRate && gstbillNumber == '')) {
@@ -226,7 +227,7 @@ export class CreateOrderComponent implements OnInit {
     var deleteBtn = document.createElement("button");
 
     editableDiv.style.minWidth = '340px';
-    editableDiv.style.border = '1px solid #f582ae';
+    editableDiv.style.border = '1px solid ivory';
     selectList.id = "mySelect";
     cell0.appendChild(selectList);
     for (var i = 0; i < this.items.length; i++) {
@@ -235,7 +236,7 @@ export class CreateOrderComponent implements OnInit {
       option.text = this.items[i].itemName;
       selectList.appendChild(option);
   }
-    cell0.style.border = '1px solid #f582ae';
+    cell0.style.border = '1px solid ivory';
     cell0.style.padding = '4px 0';
     cell0.style.display = 'flex';
     editableDiv.contentEditable = "true";
@@ -243,12 +244,12 @@ export class CreateOrderComponent implements OnInit {
 
     cell1.innerHTML = '';
     cell1.contentEditable = "true";
-    cell1.style.border = '1px solid #f582ae';
+    cell1.style.border = '1px solid ivory';
     cell1.style.textAlign = 'center';
     cell1.style.padding = '4px 0';
 
     var inp1 = document.createElement("input");
-    inp1.style.border = '1px solid #f582ae';
+    inp1.style.border = '1px solid ivory';
     inp1.style.textAlign = 'center';
     inp1.style.padding = '4px 4px';
     inp1.style.width = '200px';
@@ -274,7 +275,7 @@ export class CreateOrderComponent implements OnInit {
     var inp = document.createElement("input");
     inp.style.padding = '4px 4px';
     inp.style.width = '200px';
-    inp.style.border = '1px solid #f582ae';
+    inp.style.border = '1px solid ivory';
     inp.style.textAlign = 'center';
     inp.classList.add('qty');
     cell3.appendChild(inp); //contentEditable = "true";
@@ -286,7 +287,7 @@ export class CreateOrderComponent implements OnInit {
     });
 
     cell4.contentEditable = "true";
-    cell4.style.border = '1px solid #f582ae';
+    cell4.style.border = '1px solid ivory';
     cell4.style.padding = '4px 0';
     cell4.style.textAlign = 'center';
     cell4.classList.add('price');

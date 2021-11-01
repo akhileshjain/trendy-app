@@ -2,8 +2,8 @@ import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import {formatterDate} from './util';
 
-export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, transCharge, netAmount, disc, grNo) => {
-    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
+export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, freightText, transCharge, netAmount, disc, grNo) => {
+    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, freightText: '', transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
 
     bill.challanNumber = challanNumber;
     bill.gstbillNumber = gstBillNumber;
@@ -17,6 +17,7 @@ export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, bi
     bill.billingTotal = billingTotal;
     bill.netQty = totalQty;
     bill.gstRate = gstRate;
+    bill.freightText = freightText;
     bill.transCharge = transCharge;
     bill.netAmount = netAmount;
     bill.disc = disc;
@@ -24,8 +25,8 @@ export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, bi
 
     return bill;
 }
-export const getPrintCashOrderObject = (cashOrderNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, transCharge, netAmount, disc, grNo) => {
-    let cashOrder = {cashOrderNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
+export const getPrintCashOrderObject = (cashOrderNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, freightText, transCharge, netAmount, disc, grNo) => {
+    let cashOrder = {cashOrderNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, freightText: '', transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
 
     cashOrder.cashOrderNumber = cashOrderNumber;
     cashOrder.companyData = companyData;
@@ -39,6 +40,7 @@ export const getPrintCashOrderObject = (cashOrderNumber, companyData, billDate, 
     cashOrder.netQty = totalQty;
     cashOrder.gstRate = gstRate;
     cashOrder.transCharge = transCharge;
+    cashOrder.freightText = freightText;
     cashOrder.netAmount = netAmount;
     cashOrder.disc = disc;
     cashOrder.grNo = grNo;
@@ -119,7 +121,11 @@ export const printBill = (billPage) => {
         consArr = [];
         }
         if(billPage.embCharge) {
-        consArr.push(billPage.embText + '(' + billPage.embBreakUp + ')');
+        if(billPage.embBreakUp) {
+            consArr.push(billPage.embText + '(' + billPage.embBreakUp + ')');
+        } else {
+            consArr.push(billPage.embText);
+        }
         consArr.push('Rs.' + billPage.embCharge.toFixed(2));
         consData.push(consArr);
         consArr = [];
@@ -131,7 +137,7 @@ export const printBill = (billPage) => {
         consArr = [];
         }
         if(billPage.transCharge) {
-        consArr.push('Transport Charges');
+        consArr.push(billPage.freightText);
         consArr.push('Rs.' +billPage.transCharge.toFixed(2));
         consData.push(consArr);
         consArr = [];

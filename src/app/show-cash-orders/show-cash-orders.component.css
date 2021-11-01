@@ -16,3 +16,13 @@ table {
     align-items: center;
     top: 40%;
 }
+.open-btn {
+  text-decoration: none;
+}
+.delete-btn {
+  background: none;
+  border: 0;
+  color: blue;
+  font-size: 13px;
+  cursor: pointer;
+}

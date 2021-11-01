@@ -38,6 +38,10 @@ export class ShowOrdersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dataLoading = true;
+    this.getAllBills();
+  }
+
+  getAllBills() {
     this.ordersService.getAllBills().subscribe(res => {
       this.dataLoading = false;
       res.data.sort((x,y) => {
@@ -60,15 +64,17 @@ export class ShowOrdersComponent implements OnInit, OnDestroy {
         });
         this.dataSource = new MatTableDataSource(this.BILLS_DATA);
     });
-
   }
 
   deleteOrder(challanNumber) {
     this.confirmationDialogService.confirm('Confirm Deletion', 'Are you sure you want to delete this Challan?', 'No', 'Yes').subscribe(res => {
       if(res) {
         let bill = {challanNumber: challanNumber};
+        const index =  this.dataSource.data.map(function (obj) { return obj.challanNumber; }).indexOf(challanNumber);
         this.ordersService.deleteBill(bill).subscribe(res => {
           this.snackbarService.snackMessage('S', 'Challan Deleted Successfully!');
+          this.dataSource.data.splice(index, 1);
+          this.dataSource._updateChangeSubscription(); 
         }, err => {
           this.snackbarService.snackMessage('E', 'Something went wrong!');
         })

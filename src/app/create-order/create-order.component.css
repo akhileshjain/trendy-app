@@ -38,7 +38,7 @@
     margin: 5px 0;
 }
 .challan-label {
-    background: #f582ae;
+    background: ivory;
     border: 0.5px solid #DDD;
     font-family:"Open Sans", sans-serif;
     font-size: 16px;
@@ -74,11 +74,11 @@
     font-size: 16px;
 }
 .date-input {
-    border: 0.5px solid #f582ae;
+    border: 0.5px solid ivory;
     width: 120px;
 }
 .bill-table-header {
-    background: #f582ae;
+    background: ivory;
 }
 .first-row {
     display: flex;
@@ -86,7 +86,7 @@
 }
 .editable-first-row {
     min-width: 340px;
-    border: 0.5px solid #f582ae;
+    border: 0.5px solid ivory;
 }
 .first-row-particulars {
     min-width: 25px;
@@ -111,7 +111,7 @@
     font-size: 16px;
 }
 th, td{
-    border: 1px solid #f582ae;
+    border: 1px solid ivory;
     border-collapse: collapse;
     padding: 4px 0px;
 
@@ -130,7 +130,7 @@ th, td{
     font-family:"Open Sans", sans-serif;
 }
 .add-total-row-one {
-    /* background: #f582ae; */
+    /* background: ivory; */
     /* border: 1px solid #DDD;
     border-radius: 0.25em;
     border-style: solid; */
@@ -188,7 +188,7 @@ th, td{
     margin: 20px 40%;
     width: 150px;
     height: 40px;
-    background: #f582ae;
+    background: ivory;
     border: 3px solid;
 }
 #item-header {

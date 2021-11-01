@@ -23,8 +23,7 @@ const appRoutes: Routes = [
   {path:'order/:order_id/edit', component: EditOrderComponent},
   {path:'add_cash_order', component: CreateCashOrderComponent},
   {path:'show_cash_orders', component: ShowCashOrdersComponent},
-  {path:'cashorder/:order_id', component: ShowCashOrderComponent},
-  
+  {path:'cashorder/:order_id/open', component: ShowCashOrderComponent}  
 ];
 
 @NgModule({

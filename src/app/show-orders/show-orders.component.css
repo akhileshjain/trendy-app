@@ -20,3 +20,13 @@ table {
 overflow-y: auto;
 height: calc(100vh - 70px);
 }
+.open-btn {
+  text-decoration: none;
+}
+.delete-btn {
+  background: none;
+  border: 0;
+  color: blue;
+  font-size: 13px;
+  cursor: pointer;
+}

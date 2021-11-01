@@ -58,7 +58,6 @@ export class EditOrderComponent implements OnInit {
           // this.dbDate = new Date(res.billDate);
           // this.billDate = formatterDate(new Date(res.billDate));
           this.items = res.table;
-          debugger;
           this.items.map(i => {
             this.totalQty += parseInt(i.qty);
           });
@@ -267,7 +266,7 @@ export class EditOrderComponent implements OnInit {
     var deleteBtn = document.createElement("button");
 
     editableDiv.style.minWidth = '340px';
-    editableDiv.style.border = '1px solid #f582ae';
+    editableDiv.style.border = '1px solid ivory';
     selectList.id = "mySelect";
     cell0.appendChild(selectList);
     for (var i = 0; i < this.items.length; i++) {
@@ -276,7 +275,7 @@ export class EditOrderComponent implements OnInit {
       option.text = this.items[i].itemName;
       selectList.appendChild(option);
   }
-    cell0.style.border = '1px solid #f582ae';
+    cell0.style.border = '1px solid ivory';
     cell0.style.padding = '4px 0';
     cell0.style.display = 'flex';
     editableDiv.contentEditable = "true";
@@ -284,12 +283,12 @@ export class EditOrderComponent implements OnInit {
 
     cell1.innerHTML = '';
     cell1.contentEditable = "true";
-    cell1.style.border = '1px solid #f582ae';
+    cell1.style.border = '1px solid ivory';
     cell1.style.textAlign = 'center';
     cell1.style.padding = '4px 0';
 
     var inp1 = document.createElement("input");
-    inp1.style.border = '1px solid #f582ae';
+    inp1.style.border = '1px solid ivory';
     inp1.style.textAlign = 'center';
     inp1.style.padding = '4px 4px';
     inp1.style.width = '200px';
@@ -315,7 +314,7 @@ export class EditOrderComponent implements OnInit {
     var inp = document.createElement("input");
     inp.style.padding = '4px 4px';
     inp.style.width = '200px';
-    inp.style.border = '1px solid #f582ae';
+    inp.style.border = '1px solid ivory';
     inp.style.textAlign = 'center';
     inp.classList.add('qty');
     cell3.appendChild(inp); //contentEditable = "true";
@@ -327,7 +326,7 @@ export class EditOrderComponent implements OnInit {
     });
 
     cell4.contentEditable = "true";
-    cell4.style.border = '1px solid #f582ae';
+    cell4.style.border = '1px solid ivory';
     cell4.style.padding = '4px 0';
     cell4.style.textAlign = 'center';
     cell4.classList.add('price');
