@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { OrdersService } from '../service/orders.service';
 import {ThemePalette} from '@angular/material/core';
@@ -6,13 +6,14 @@ import {ProgressSpinnerMode} from '@angular/material/progress-spinner';
 import { catchError } from 'rxjs/operators';
 import { SnackBarService } from '../shared/snack-bar/snack-bar/snack-bar.service';
 import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
+import * as XLSX from 'xlsx';
 
 export interface bills {
   challanNumber: string;
   grNo: string,
   companyData: string;
-  billDate: Date;
-  netAmount: number;
+  billDate: string;
+  netAmount: string;
 }
 
 @Component({
@@ -24,13 +25,35 @@ export interface bills {
 export class ShowOrdersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ["challanNumber", "grNo", "companyData",  "billDate", "netAmount", "open", 'delete'];
   dataSource;
+  @ViewChild('TABLE', { read: ElementRef, static: false }) table:ElementRef;
+  // @ViewChild('TABLE', {static: false}) table: ElementRef;
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'indeterminate';
   dataLoading: boolean = false;
 
   BILLS_DATA: bills[] = [];
 
+  exportAsExcel() {
+      debugger;
+      let newBills = this.BILLS_DATA.map(r => {
+        var x = r.billDate.split('-');
+        var y = x[1] + '-' + x[0] + '-' + x[2];
+        return {
+          "Challan number" : r.challanNumber,
+          "GR Number": r.grNo,
+          "Company": r.companyData,
+          "Bill Date": new Date(y),
+          "Net Amount(in Rs.)": parseInt(r.netAmount.replace("Rs.", '').replace(",",""))
+        }
+      })
+      const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(newBills);//converts a DOM TABLE element to a worksheet
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
+      /* save to file */
+      XLSX.writeFile(wb, 'Challans_Complete.xlsx');
+
+  }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }

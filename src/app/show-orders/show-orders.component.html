@@ -6,13 +6,14 @@
 </mat-progress-spinner>
 </div>
 
+<button mat-raised-button color="primary" (click)="exportAsExcel()">Export as Excel</button>
 <div class="order-table">
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
 
       
-      <table mat-table [dataSource]="dataSource" id="all-orders-table" class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" #TABLE id="all-orders-table" class="mat-elevation-z8">
 
         <!-- Challan No. Column -->
         <ng-container matColumnDef="challanNumber">
