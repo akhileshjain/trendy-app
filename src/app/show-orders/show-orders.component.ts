@@ -34,7 +34,6 @@ export class ShowOrdersComponent implements OnInit, OnDestroy {
   BILLS_DATA: bills[] = [];
 
   exportAsExcel() {
-      debugger;
       let newBills = this.BILLS_DATA.map(r => {
         var x = r.billDate.split('-');
         var y = x[1] + '-' + x[0] + '-' + x[2];

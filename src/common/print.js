@@ -100,6 +100,20 @@ export const printBill = (billPage) => {
         body: data,
         startY: 150,
         theme: 'grid',
+        didParseCell: (cell, data) => {
+
+            let body = cell.table.body;
+            for(let i = 0; i < body.length; i++) {
+                if(body[i].cells[1].text[0].indexOf('Embroidery Charges') != -1) {
+                    body[i].cells[0].styles.fontStyle = 'bold';
+                    body[i].cells[1].styles.fontStyle = 'bold';
+                    body[i].cells[2].styles.fontStyle = 'bold';
+                    body[i].cells[3].styles.fontStyle = 'bold';
+                    body[i].cells[4].styles.fontStyle = 'bold';
+                    body[i].cells[5].styles.fontStyle = 'bold';
+                }
+            }
+        },
         didDrawCell: data => {
 
         }
@@ -158,7 +172,7 @@ export const printBill = (billPage) => {
         margin: {'left': 225},
         theme: 'plain',
         columnStyles: {
-            0: {cellWidth: 220, fontSize: 12, fontStyle: 'bold'},
+            0: {cellWidth: 220, fontSize: 12},
             1: {cellWidth: 100, fontSize: 12},
         },
         didDrawCell: (cell, data) => {

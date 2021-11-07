@@ -184,10 +184,12 @@ export class CreateCashOrderComponent implements OnInit {
               let tableElt = (<HTMLTableElement>document.getElementById('order-table'));
               let ind_total = parseFloat(tableElt.rows[i].cells[4].innerText.trim());
               let ind_qty = parseInt((<HTMLInputElement>tableElt.rows[i].cells[3].children[0]).value.trim());
+              let selected_item = (<HTMLSelectElement>tableElt.rows[i].cells[0].children[0]).selectedOptions[0].text;
+
               if(!isNaN(ind_total)) {
                 total = total + ind_total;
               }
-              if(!isNaN(ind_qty)) {
+              if(!isNaN(ind_qty) && (selected_item !== 'Embroidery Charges') || (selected_item !== 'Frame Charges')) {
                 totQty = totQty + ind_qty;
               }
             }
