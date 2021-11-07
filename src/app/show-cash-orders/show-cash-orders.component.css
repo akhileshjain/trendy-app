@@ -16,6 +16,10 @@ table {
     align-items: center;
     top: 40%;
 }
+.cash-order-table {
+  overflow-y: auto;
+  height: calc(100vh - 70px);
+  }
 .open-btn {
   text-decoration: none;
 }

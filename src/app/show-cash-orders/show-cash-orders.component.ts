@@ -5,12 +5,13 @@ import {ThemePalette} from '@angular/material/core';
 import {ProgressSpinnerMode} from '@angular/material/progress-spinner';
 import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
 import { SnackBarService } from '../shared/snack-bar/snack-bar/snack-bar.service';
-import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
+import * as XLSX from 'xlsx';
+
 export interface cashOrders {
   cashOrderNumber: string;
   companyData: string;
-  billDate: Date;
-  netAmount: number;
+  cashOrderDate: string;
+  netAmount: string;
 }
 
 @Component({
@@ -20,7 +21,7 @@ export interface cashOrders {
   providers: [ConfirmationDialogService, SnackBarService]
 })
 export class ShowCashOrdersComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ["cashOrderNumber", "companyData",  "billDate", "netAmount", "open", 'delete'];
+  displayedColumns: string[] = ["cashOrderNumber", "companyData",  "cashOrderDate", "netAmount", "open", 'delete'];
   dataSource;
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'indeterminate';
@@ -28,6 +29,25 @@ export class ShowCashOrdersComponent implements OnInit, OnDestroy {
 
   BILLS_DATA: cashOrders[] = [];
 
+  exportAsExcel() {
+    let newBills = this.BILLS_DATA.map(r => {
+      var x = r.cashOrderDate.split('-');
+      var y = x[1] + '-' + x[0] + '-' + x[2];
+      return {
+        "Challan number" : r.cashOrderNumber,
+        "Company": r.companyData,
+        "Bill Date": new Date(y),
+        "Net Amount(in Rs.)": parseInt(r.netAmount.replace("Rs.", '').replace(",",""))
+      }
+    })
+    const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(newBills);//converts a DOM TABLE element to a worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, 'Cash_Orders_Complete.xlsx');
+
+}
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -39,15 +59,15 @@ export class ShowCashOrdersComponent implements OnInit, OnDestroy {
     this.ordersService.getAllCashOrders().subscribe(res => {
       this.dataLoading = false;
       res.data.map(b => {
-         let obj = {"cashOrderNumber": undefined, "companyData": undefined,  "billDate": undefined,  "netAmount": undefined};      
+         let obj = {"cashOrderNumber": undefined, "companyData": undefined,  "cashOrderDate": undefined,  "netAmount": undefined};      
          obj.cashOrderNumber = b.cashOrderNumber;
          obj.companyData = b.companyData;
-         if(b.billDate) {
-           let formattedDate = new Date(b.billDate);
+         if(b.cashOrderDate) {
+           let formattedDate = new Date(b.cashOrderDate);
            let month = formattedDate.getMonth() + 1;
-           obj.billDate = formattedDate.getDate() + '-' + month + '-'+ formattedDate.getFullYear();
+           obj.cashOrderDate = formattedDate.getDate() + '-' + month + '-'+ formattedDate.getFullYear();
          } else {
-           obj.billDate = '';
+           obj.cashOrderDate = '';
          }
           obj.netAmount = 'Rs.' + b.netAmount.toLocaleString();
           this.BILLS_DATA.push(obj);

@@ -111,6 +111,14 @@ export const printBill = (billPage) => {
                     body[i].cells[3].styles.fontStyle = 'bold';
                     body[i].cells[4].styles.fontStyle = 'bold';
                     body[i].cells[5].styles.fontStyle = 'bold';
+                } else if(body[i].cells[1].text[0].indexOf('Frame Charges') != -1) {
+                    body[i].cells[0].styles.fontStyle = 'bold';
+                    body[i].cells[1].styles.fontStyle = 'bold';
+                    body[i].cells[2].styles.fontStyle = 'bold';
+                    body[i].cells[3].styles.fontStyle = 'bold';
+                    body[i].cells[4].styles.fontStyle = 'bold';
+                    body[i].cells[5].styles.fontStyle = 'bold';
+
                 }
             }
         },

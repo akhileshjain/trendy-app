@@ -3,7 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { OrdersService } from '../service/orders.service';
 import {ThemePalette} from '@angular/material/core';
 import {ProgressSpinnerMode} from '@angular/material/progress-spinner';
-import { catchError } from 'rxjs/operators';
 import { SnackBarService } from '../shared/snack-bar/snack-bar/snack-bar.service';
 import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
 import * as XLSX from 'xlsx';
