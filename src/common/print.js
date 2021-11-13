@@ -26,6 +26,7 @@ export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, bi
     return bill;
 }
 export const getPrintCashOrderObject = (cashOrderNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, freightText, transCharge, netAmount, disc, grNo) => {
+   
     let cashOrder = {cashOrderNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, freightText: '', transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
 
     cashOrder.cashOrderNumber = cashOrderNumber;
@@ -44,6 +45,7 @@ export const getPrintCashOrderObject = (cashOrderNumber, companyData, billDate, 
     cashOrder.netAmount = netAmount;
     cashOrder.disc = disc;
     cashOrder.grNo = grNo;
+    cashOrder.freightText = freightText;
 
     return cashOrder;
 }

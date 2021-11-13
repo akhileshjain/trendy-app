@@ -106,7 +106,7 @@ export class CreateOrderComponent implements OnInit {
       table.push(row);
     }
     let billObject = getBillObject(challanNumber, gstbillNumber, companyId, companyData, billDate, table,
-      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo);
+      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo, freightText);
 
     let printObject = getPrintBillObject(challanNumber, gstbillNumber, companyData, billDate,table, embText, embrCharge,
       embBreakUp, netQty, billTotal, gstRate, freightText, transCharge, netAmount, this.discCost, grNo);

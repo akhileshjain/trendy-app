@@ -105,7 +105,7 @@ export class CreateCashOrderComponent implements OnInit {
       table.push(row);
     }
     let cashOrderObject = getCashOrderObject(cashOrderNumber, companyId, companyData, cashOrderDate, table,
-      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo);
+      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo, freightText);
 
     let printObject = getPrintCashOrderObject(cashOrderNumber, companyData, cashOrderDate,table, embText, embrCharge,
       embBreakUp, netQty, billTotal, gstRate, freightText, transCharge, netAmount, this.discCost, grNo);
