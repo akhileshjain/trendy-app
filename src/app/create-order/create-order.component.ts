@@ -75,7 +75,7 @@ export class CreateOrderComponent implements OnInit {
     let embrCharge = parseFloat((<HTMLInputElement>document.getElementById('embr')).value.trim());
     let embBreakUp = (<HTMLSelectElement>document.getElementById("emb-input")).value.trim();
     let embText = document.getElementById('emb-label').innerText.trim();
-    let discPercent = parseFloat((<HTMLInputElement>document.getElementById('disc')).value.trim());
+    let discPercent = parseFloat((<HTMLInputElement>document.getElementById('disc')).innerText.trim());
     let freightText = document.getElementById('freight-label').innerText.trim();
     let grNo = (<HTMLSelectElement>document.getElementById("gr-input")).value.trim();
     var tableRows = (<HTMLTableElement>document.getElementById('order-table')).rows;
