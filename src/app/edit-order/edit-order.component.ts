@@ -139,7 +139,7 @@ export class EditOrderComponent implements OnInit {
       return number; //new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(number);
     }
   }
-  saveAndPrintOrder() {
+  editOrder() {
     let table = [];
     let challanNumber = document.getElementById("challan-input").innerText.trim();
     let gstbillNumber = document.getElementById("gst-input").innerText.trim();
@@ -150,6 +150,7 @@ export class EditOrderComponent implements OnInit {
     let gstRate = parseFloat((<HTMLInputElement>document.getElementById('gst')).value.trim());
     let transCharge = parseFloat((<HTMLInputElement>document.getElementById('tr-charge')).value.trim());
     let netAmount = parseFloat(document.getElementById('net-total').innerText);
+    let discPercent = parseFloat((<HTMLInputElement>document.getElementById('disc')).innerText.trim());
     let embrCharge = parseFloat((<HTMLInputElement>document.getElementById('embr')).value.trim());
     let embBreakUp = (<HTMLSelectElement>document.getElementById("emb-input")).value.trim();
     let embText = document.getElementById('emb-label').innerText.trim();
@@ -183,18 +184,14 @@ export class EditOrderComponent implements OnInit {
       table.push(row);
     }
     let billObject = getBillObject(challanNumber, gstbillNumber, companyId, companyData, billDate, table,
-      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo, this.discPercent);
-
-    let printObject = getPrintBillObject(challanNumber, gstbillNumber, companyData, billDate,table, embText, embrCharge,
-      embBreakUp, netQty, billTotal, gstRate, transCharge, netAmount, this.discCost, grNo);
+      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo, discPercent);
 
     this.orderService.billingOrder = billObject;
     if((!gstRate && gstbillNumber != '') || (gstRate && gstbillNumber == '')) {
       this.snackBarService.snackMessage('E', 'If you are providing GST Amount, please enter Bill No. and vice-versa.');      
     } else {
-      this.orderService.saveBill(billObject).subscribe(res => {
-        this.snackBarService.snackMessage('S', 'Bill Saved successfully! Generating bill now...');
-        printBill(printObject);
+      this.orderService.editBill(billObject).subscribe(res => {
+        this.snackBarService.snackMessage('S', 'Bill Edited successfully!');
         // this.router.navigate(['/bill_print']);
       }, err => {
         this.snackBarService.snackMessage('E', 'There was some problem saving the bill.');
