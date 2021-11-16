@@ -16,7 +16,7 @@
                             <div class="challan-label" contenteditable="true" >Challan #</div>
                             <div id="challan-input" class="challan-input" contenteditable="true" [innerText]="challanNo"></div>
                             <div class="challan-label" contenteditable="true" >Bill #</div>
-                            <div id="gst-input" class="challan-input" contenteditable="true"></div>
+                            <div id="gst-input" class="challan-input" contenteditable="true" [innerText]="gstBillNumber"></div>
                     </div>
                     <mat-form-field>
                         <input id="date-input" matInput [matDatepicker]="picker1" placeholder="Date" [formControl]="date">
@@ -44,18 +44,29 @@
                     <th id="price-header">Price</th>
                     <th></th>
                 </tr>
-            <tr>
+                <tr *ngFor="let row of tableItems">
+                    <td class="first-row">
+                        <select>
+                            <option *ngFor="let item of items" value="{{getSelectedItem(row.item)}}" [selected]="getSelectedItem(row.item)">{{getSelectedLabel(row.item)}}</option>
+                        </select>
+                        <div class="editable-first-row" contenteditable="true">{{this.getRowItem(row.item)}}</div>
+                    </td>
+                    <td class="row-style size" contenteditable="true">{{row.size}}</td>
+                    <td ><input (change)="callCalc($event)" class="row-style rate" [value]="row.rate" type="number"/></td>    
+                    <td ><input (change)="callCalc($event)" class="row-style qty" [value]="row.qty" type="number"/></td>    
+                    <td (keyup)="callCalc($event)" class="row-style price" >{{getPrice(row.price)}}</td>
+                </tr>
+            <!-- <tr>
                 <td class="first-row">
                     <select >
                             <option *ngFor="let item of items" [value]="item.id">{{item.itemName}}</option>
                     </select>         
-                    <div class="editable-first-row" contenteditable="true"></div>
                 </td>         
                     <td class="row-style size" contenteditable="true"></td>
                     <td ><input (change)="callCalc($event)" class="row-style rate" type="number"/></td>    
                     <td ><input (change)="callCalc($event)" class="row-style qty" type="number"/></td>    
                     <td (keyup)="callCalc($event)" class="row-style price" ></td>
-            </tr>
+            </tr> -->
             </table>
             <button (click)="addRow()" class="add-row-btn">Add Row</button>
             
@@ -65,33 +76,33 @@
                             <div><textarea id="gr-input" contenteditable="true" rows="2" cols = "50" placeholder="Enter GR number here">{{grNo}}</textarea></div>
                             <div class="tt_first_row">                                
                                 <div class="add-total-row-one">Total</div>  
-                                <div contenteditable="true" id = "bill-total" class="add-total-row-two" ></div>
+                                <div contenteditable="true" id = "bill-total" class="add-total-row-two">{{billingTotal}}</div>
                             </div>
                         </div>
                     </div> 
                     <div class="add-total-row-box">
                         <div contenteditable="true" class="add-total-row-one">Discount %</div>  
-                        <div contenteditable="true" id = "disc" class="add-total-row-two" (keyup)="callDisc($event)">{{disc}}</div>
+                        <div contenteditable="true" id = "disc" class="add-total-row-two" (keyup)="callDisc($event)">{{discPercent}}</div>
                     </div> 
                     <div class="add-total-row-box">
-                        <div contenteditable="true" id="emb-label" class="add-total-row-one">Embroidery Charges</div>  
+                        <div contenteditable="true" id="emb-label" class="add-total-row-one">{{embText}}</div>  
                         <textarea id="emb-input" class="emb-input" contenteditable="true" rows="2" cols = "20" placeholder="Enter embr. charge breakup here">{{embBreakUp}}</textarea>
-                        <td ><input (change)="callEmbr($event)" id = "embr" class="add-total-row-two" min="0" value = "0" type="number"/>{{embCharge}}</td> 
+                        <td ><input (change)="callEmbr($event)" id = "embr" class="add-total-row-two" min="0" [value] = "embCharge" type="number"/></td> 
                     </div> 
                     <div class="add-total-row-box">
                         <div contenteditable="true" class="add-total-row-one">GST/Taxes</div>  
-                        <td ><input (change)="callGST($event)" id = "gst" class="add-total-row-two" min="0" value = "0" type="number"/></td> 
+                        <td ><input (change)="callGST($event)" id = "gst" class="add-total-row-two" min="0" [value] = "gstRate" type="number"/></td> 
                         <!-- <div contenteditable="true" id = "gst" class="add-total-row-two" (keyup)="callGST($event)">0</div> -->
                     </div> 
                     <div class="add-total-row-box">
                         <div contenteditable="true" class="add-total-row-one">Freight Charges</div>  
-                        <td ><input (change)="callTransportationCharge($event)" id = "tr-charge" class="add-total-row-two" min="0" value = "0" type="number"/></td> 
+                        <td ><input (change)="callTransportationCharge($event)" id = "tr-charge" class="add-total-row-two" min="0" [value] = "transCharge" type="number"/></td> 
 
                         <!-- <div contenteditable="true" id = "tr-charge" class="add-total-row-two" (keyup)="callTransportationCharge($event)">0</div> -->
                     </div> 
                     <div class="add-total-row-box">
                         <div class="add-total-row-one">Net Payable</div>  
-                        <div contenteditable="true" id = "net-total" class="add-total-row-two"></div>
+                        <div contenteditable="true" id = "net-total" class="add-total-row-two">{{netAmount}}</div>
                     </div> 
                     <div class="add-total-row-box">
                         <div class="add-total-row-one">Total Qty</div>

@@ -1,7 +1,8 @@
 export const getBillObject = (challanNumber, gstbillNumber, companyId, companyData, billDate, table,
-    netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, discCost, grNo, freightText) => {
+    netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, discCost, grNo, freightText, discPercent) => {
 
-    let billObject = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: '', table: [], embText:'', embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: '', freightText: ''};
+    let billObject = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: '', table: [], embText:'', embCharge: '', 
+    embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: '', freightText: '', discPercent: 0.0};
 
     let rupeeSymbol = 'Rs.';
 
@@ -25,6 +26,7 @@ export const getBillObject = (challanNumber, gstbillNumber, companyId, companyDa
     billObject.netAmount = netAmount;
     // billObject.disc = rupeeSymbol + discCost;
     billObject.disc = discCost;
+    billObject.discPercent = discPercent;
     billObject.grNo = grNo;
     billObject.freightText = freightText;
 

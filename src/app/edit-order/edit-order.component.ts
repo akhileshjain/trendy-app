@@ -27,14 +27,18 @@ export class EditOrderComponent implements OnInit {
   netAmount: number;
   disc: number;
   embText: string;
+  billingTotal: number;
   gstBillNumber: string;
   gstCost: Number = 0.0;
+  gstRate: number;
   embCharge: Number = 0.0;
   trCost: Number = 0.0;
   billTotal: Number = 0.0;
   discCost: number = 0.0;
+  discPercent: number = 0.0;
   totalQty: number = 0.0;
-  items = [];
+  items: any;
+  tableItems = [];
   customerList = [];
   date = new FormControl(new Date());
   color: ThemePalette = 'primary';
@@ -48,28 +52,32 @@ export class EditOrderComponent implements OnInit {
     this.route.params.subscribe(data => {
       if(data['order_id']) {
         this.challanNo = data['order_id'];
+        this.orderService.getItems();
+        this.orderService.getItemUpdateListener().subscribe((items) => {
+              this.items = items;
+          });
         this.orderService.getBill(this.challanNo).subscribe(res => {
           this.billExists = true;
           this.challanNo = res.challanNumber;
           this.companyData = res.companyData;
           this.companyId = res.companyId;
-          console.log(res); 
           this.disc = res.disc;
+          this.discPercent = res.discPercent;
           // this.dbDate = new Date(res.billDate);
           // this.billDate = formatterDate(new Date(res.billDate));
-          this.items = res.table;
-          this.items.map(i => {
+          this.tableItems = res.table;
+          this.tableItems.map(i => {
             this.totalQty += parseInt(i.qty);
           });
           this.grNo = res.grNo;
-          // this.billingTotal = res.billingTotal;
-          // this.gstRate = res.gstRate;
-          // this.embText = res.embText;
+          this.billingTotal = res.billingTotal;
+          this.gstRate = res.gstRate;
+          this.embText = res.embText;
           this.embCharge = res.embCharge;
           this.embBreakUp = res.embBreakUp;
-          // this.transCharge = res.transCharge;
-          // this.netAmount = res.netAmount;
-          // this.gstBillNumber = res.gstbillNumber;
+          this.transCharge = res.transCharge;
+          this.netAmount = res.netAmount; 
+          this.gstBillNumber = res.gstbillNumber;
         }, error => {
             this.billExists = false;
         })
@@ -92,9 +100,39 @@ export class EditOrderComponent implements OnInit {
     //   this.dataLoading = false;
     //   this.snackBarService.snackMessage('E', 'Issue fetching latest Challan Number')
     // });
-    //  this.orderService.getItemUpdateListener().subscribe((items) => {
-    //      this.items = items;
-    // });
+   
+  }
+  getRowItem(rowItem) {
+    var customRow;
+    this.items.map(e => {
+      if(rowItem.indexOf(e.itemName) != -1) {  
+         customRow = rowItem.substring(e.itemName.length+1, rowItem.length);
+      }
+  });
+      return customRow;
+  }
+  getPrice(item) {
+    return item.substring(3, item.length);
+  }
+  getSelectedItem(rowItem) {
+    var customRowId;
+
+    this.items.map((e, idx) => {
+      if(rowItem.indexOf(e.itemName) != -1) {  
+         customRowId = idx;
+      }
+  });
+  return customRowId;
+  }
+  getSelectedLabel(rowItem) {
+    var itemLabel;
+
+    this.items.map((e, idx) => {
+      if(rowItem.indexOf(e.itemName) != -1) {  
+         itemLabel = e.itemName;
+      }
+  });
+  return itemLabel;
   }
   getNumber(number) {
     if(number !== undefined || number !== null) {
@@ -145,7 +183,7 @@ export class EditOrderComponent implements OnInit {
       table.push(row);
     }
     let billObject = getBillObject(challanNumber, gstbillNumber, companyId, companyData, billDate, table,
-      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo);
+      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo, this.discPercent);
 
     let printObject = getPrintBillObject(challanNumber, gstbillNumber, companyData, billDate,table, embText, embrCharge,
       embBreakUp, netQty, billTotal, gstRate, transCharge, netAmount, this.discCost, grNo);

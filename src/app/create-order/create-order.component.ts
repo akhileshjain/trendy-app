@@ -75,6 +75,7 @@ export class CreateOrderComponent implements OnInit {
     let embrCharge = parseFloat((<HTMLInputElement>document.getElementById('embr')).value.trim());
     let embBreakUp = (<HTMLSelectElement>document.getElementById("emb-input")).value.trim();
     let embText = document.getElementById('emb-label').innerText.trim();
+    let discPercent = parseFloat((<HTMLInputElement>document.getElementById('disc')).value.trim());
     let freightText = document.getElementById('freight-label').innerText.trim();
     let grNo = (<HTMLSelectElement>document.getElementById("gr-input")).value.trim();
     var tableRows = (<HTMLTableElement>document.getElementById('order-table')).rows;
@@ -106,7 +107,7 @@ export class CreateOrderComponent implements OnInit {
       table.push(row);
     }
     let billObject = getBillObject(challanNumber, gstbillNumber, companyId, companyData, billDate, table,
-      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo, freightText);
+      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo, freightText, discPercent);
 
     let printObject = getPrintBillObject(challanNumber, gstbillNumber, companyData, billDate,table, embText, embrCharge,
       embBreakUp, netQty, billTotal, gstRate, freightText, transCharge, netAmount, this.discCost, grNo);
