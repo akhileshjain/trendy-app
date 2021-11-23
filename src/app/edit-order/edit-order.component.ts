@@ -114,26 +114,7 @@ export class EditOrderComponent implements OnInit {
   getPrice(item) {
     return item.substring(3, item.length);
   }
-  getSelectedItem(rowItem) {
-    var customRowId;
 
-    this.items.map((e, idx) => {
-      if(rowItem.indexOf(e.itemName) != -1) {  
-         customRowId = idx;
-      }
-  });
-  return customRowId;
-  }
-  getSelectedLabel(rowItem) {
-    var itemLabel;
-
-    this.items.map((e, idx) => {
-      if(rowItem.indexOf(e.itemName) != -1) {  
-         itemLabel = e.itemName;
-      }
-  });
-  return itemLabel;
-  }
   getNumber(number) {
     if(number !== undefined || number !== null) {
       return number; //new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(number);

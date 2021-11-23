@@ -22,7 +22,7 @@ export interface bills {
   providers: [ConfirmationDialogService, SnackBarService]
 })
 export class ShowOrdersComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ["challanNumber", "grNo", "companyData",  "billDate", "netAmount", "open", 'delete'];
+  displayedColumns: string[] = ["challanNumber", "grNo", "companyData",  "billDate", "netAmount", "open", "edit", 'delete'];
   dataSource;
   @ViewChild('TABLE', { read: ElementRef, static: false }) table:ElementRef;
   // @ViewChild('TABLE', {static: false}) table: ElementRef;
