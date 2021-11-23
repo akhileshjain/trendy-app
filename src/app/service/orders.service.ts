@@ -73,7 +73,7 @@ export class OrdersService {
       );
   }
   editBill(billObj) {
-      return this.http.post(`${this.url}api/getBill`, billObj).pipe(
+      return this.http.post(`${this.url}api/editBill`, billObj).pipe(
         catchError((err) => {
           return throwError(err.error);
         })

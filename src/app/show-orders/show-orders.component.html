@@ -51,10 +51,11 @@
       <td mat-cell *matCellDef="let element"> <a class="open-btn" href="/order/{{element.challanNumber}}/open">Open</a></td>
     </ng-container>
 
-    <!-- <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef> Details </th>
-      <td mat-cell *matCellDef="let element"> <a href="/order/{{element.challanNumber}}/edit" >Edit </a></td>
-    </ng-container> -->
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef> Edit </th>
+      <td mat-cell *matCellDef="let element"> <a class="open-btn" href="/order/{{element.challanNumber}}/edit" >Edit </a></td>
+    </ng-container>
+
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef> Delete </th>
       <td mat-cell *matCellDef="let element"><button class="delete-btn" (click)= "deleteOrder(element.challanNumber)">Delete</button>  </td>
