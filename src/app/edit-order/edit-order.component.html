@@ -53,7 +53,7 @@
                     </td>
                     <td class="row-style size" contenteditable="true">{{row.size}}</td>
                     <td ><input (change)="callCalc($event)" class="row-style rate" [value]="row.rate" type="number"/></td>    
-                    <td ><input (change)="callCalc($event)" class="row-style qty" [value]="row.qty" type="number"/></td>    
+                    <td ><input (change)="callCalc($event)" class="row-style qty" [value]="row.qty"/></td>    
                     <td (keyup)="callCalc($event)" class="row-style price" >{{getPrice(row.price)}}</td>
                 </tr>
             <!-- <tr>
