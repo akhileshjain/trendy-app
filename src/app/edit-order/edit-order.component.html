@@ -47,7 +47,7 @@
                 <tr *ngFor="let row of tableItems">
                     <td class="first-row">
                         <select>
-                            <option *ngFor="let item of items" [value]="item.id" [selected]="row.item.indexOf(item.itemName) != -1?true:false">{{item.itemName}}</option>
+                            <option *ngFor="let item of items" value="{{getSelectedItem(row.item)}}" [selected]="getSelectedItem(row.item)">{{getSelectedLabel(row.item)}}</option>
                         </select>
                         <div class="editable-first-row" contenteditable="true">{{this.getRowItem(row.item)}}</div>
                     </td>
