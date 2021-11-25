@@ -36,6 +36,7 @@ export class EditOrderComponent implements OnInit {
   billTotal: Number = 0.0;
   discCost: number = 0.0;
   discPercent: number = 0.0;
+  freightText: string;
   totalQty: number = 0.0;
   items: any;
   tableItems = [];
@@ -76,6 +77,7 @@ export class EditOrderComponent implements OnInit {
           this.embCharge = res.embCharge;
           this.embBreakUp = res.embBreakUp;
           this.transCharge = res.transCharge;
+          this.freightText = res.freightText;
           this.netAmount = res.netAmount; 
           this.gstBillNumber = res.gstbillNumber;
         }, error => {
@@ -135,6 +137,7 @@ export class EditOrderComponent implements OnInit {
     let embrCharge = parseFloat((<HTMLInputElement>document.getElementById('embr')).value.trim());
     let embBreakUp = (<HTMLSelectElement>document.getElementById("emb-input")).value.trim();
     let embText = document.getElementById('emb-label').innerText.trim();
+    let freightText = document.getElementById('freight-text').innerText.trim();
     let grNo = (<HTMLSelectElement>document.getElementById("gr-input")).value.trim();
     var tableRows = (<HTMLTableElement>document.getElementById('order-table')).rows;
     let billDate1 = (<HTMLInputElement>document.getElementById("date-input")).value;
@@ -165,7 +168,7 @@ export class EditOrderComponent implements OnInit {
       table.push(row);
     }
     let billObject = getBillObject(challanNumber, gstbillNumber, companyId, companyData, billDate, table,
-      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo, discPercent);
+      netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, this.discCost, grNo, freightText, discPercent);
 
     this.orderService.billingOrder = billObject;
     if((!gstRate && gstbillNumber != '') || (gstRate && gstbillNumber == '')) {

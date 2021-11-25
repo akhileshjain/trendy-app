@@ -55,7 +55,7 @@ export const printBill = (billPage) => {
     let consData = [];
     let consArr = [];
 
-    let head = [['Sr No.', 'Item', 'Size', 'Rate (in Rs.)', 'Qty', 'Price (in Rs.)']];
+    let head = [['Sr No.', 'Item', 'Size', 'Rate (in Rs.)', 'Qty', 'Price']];
     billPage.table.forEach((i, index) => {
         let arr = [];
         let sr = index + 1 + '.';
@@ -99,7 +99,9 @@ export const printBill = (billPage) => {
     
         (doc).autoTable({
         head: head,
+        headStyles: { fontStyle: 'bold', fontSize: 12 },
         body: data,
+        tableLineWidth: 1.75,
         startY: 150,
         theme: 'grid',
         didParseCell: (cell, data) => {
@@ -130,7 +132,12 @@ export const printBill = (billPage) => {
         })
         let finalY = doc.previousAutoTable.finalY; //this gives you the value of the end-y-axis-position of the previous autotable.
         if(billPage.grNo) {
-        doc.text('GR #: ' + billPage.grNo, 40, finalY + 20);
+
+        if(finalY + 20 > doc.internal.pageSize.height - 40) {
+            finalY = 0;
+            doc.addPage();
+        } 
+            doc.text('GR #: ' + billPage.grNo, 40, finalY + 20);
         }
 
         consArr.push('Total');
