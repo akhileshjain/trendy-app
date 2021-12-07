@@ -83,7 +83,7 @@ export const printBill = (billPage) => {
         doc.text('ESTIMATE', 250, 45);
         // doc.setFontSize(10);
         doc.setFontSize(12);
-        doc.text('O - 0161-2704284', 470, 40);
+        doc.text('O - 0161-4648284', 470, 40);
         doc.setFontSize(14);
         if(billPage.challanNumber) {
             doc.text('Challan No: ' + billPage.challanNumber, 30, 70);
