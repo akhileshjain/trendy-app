@@ -11,7 +11,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
-import {MatRadioModule} from '@angular/material/radio'
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -23,27 +22,21 @@ import { ShowOrderComponent } from './show-order/show-order.component';
 import { CreateCashOrderComponent } from './create-cash-order/create-cash-order.component';
 import { ShowCashOrdersComponent } from './show-cash-orders/show-cash-orders.component';
 import { ShowCashOrderComponent } from './show-cash-order/show-cash-order.component';
-import { EditOrderComponent } from './edit-order/edit-order.component';
-import { HTMLSanitizePipe } from './shared/htmlsanitize/html-sanitize.pipe';
-import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     CreateOrderComponent,
-    EditOrderComponent,
     CreateCashOrderComponent, 
     ShowCashOrdersComponent,
     ShowCashOrderComponent,
     AddCustomerComponent,
     AddItemComponent,
-    HTMLSanitizePipe,
     ShowOrdersComponent,
     PrintOrderComponent,
     HeaderComponent,
     SnackBarComponent,
-    ConfirmationDialogComponent,
     ShowOrderComponent
   ],
   imports: [
@@ -54,7 +47,6 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
     MatSelectModule,
     MatTableModule,
     MatInputModule,
-    MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
@@ -66,6 +58,6 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
   ],
   providers: [MatDatepickerModule],
   bootstrap: [AppComponent],
-  entryComponents: [SnackBarComponent, ConfirmationDialogComponent]
+  entryComponents: [SnackBarComponent]
 })
 export class AppModule { }

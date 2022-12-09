@@ -6,7 +6,7 @@ import { ItemModel } from "./models/item.model";
 
 @Injectable({ providedIn: "root" })
 export class OrdersService {
-  url = "https://safe-dawn-47148.herokuapp.com/";
+  url = "https://trendy.onrender.com/";
   private items = [];
   billingOrder;
   private itemsUpdated = new Subject<any>();
@@ -71,6 +71,13 @@ export class OrdersService {
           return throwError(err.error);
         })
       );
+  }
+  deleteBill(bill) {
+    return this.http.post(`${this.url}api/deleteBill`, bill).pipe(
+      catchError((err) => {
+        return throwError(err.error);
+      })
+    )
   }
   saveCashOrder(cashOrderObj) {
       return this.http.post(`${this.url}api/cashorder`, cashOrderObj).pipe(

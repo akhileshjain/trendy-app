@@ -1,0 +1,6 @@
+<div class="conf-dialog-title"><p>{{ title }}</p></div>
+<div class="conf-dialog-message"><p [innerHTML]="message | htmlSanitize"></p></div>
+<div class="conf-dialog-btns">
+<button class="conf-dialog-btn custom-button" type="button" (click)="onDialogClose()">{{closeButtonText}}</button>
+<button *ngIf="isConfirmVisible" class="conf-dialog-btn custom-button" type="button" (click)="onDialogConfirm()">{{confirmButtonText}}</button>
+</div>

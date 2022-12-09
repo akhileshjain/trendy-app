@@ -16,3 +16,7 @@ table {
     align-items: center;
     top: 40%;
 }
+.order-table {
+  overflow-y: auto;
+  height: calc(100vh - 70px);
+}

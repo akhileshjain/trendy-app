@@ -16,3 +16,6 @@ table {
     align-items: center;
     top: 40%;
 }
+.order-table {
+  overflow-y: scroll;
+}

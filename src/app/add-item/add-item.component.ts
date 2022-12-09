@@ -35,7 +35,8 @@ export class AddItemComponent implements OnInit {
 
   ngOnInit() {
     this.addItemForm = new FormGroup({
-      'itemName': new FormControl('', Validators.required)
+      'itemName': new FormControl('', Validators.required),
+      'addToTotal': new FormControl(true, Validators.required)
       // ,'color': new FormControl('', Validators.required),
       // 'size': new FormControl('', Validators.required),
     });
@@ -44,6 +45,7 @@ export class AddItemComponent implements OnInit {
 
   onAddItem() {
     this.itemsData.itemName =  this.addItemForm.get('itemName').value;
+    this.itemsData.addToTotal = this.addItemForm.get('addToTotal').value;
     // this.itemsData.color = this.addItemForm.get('color').value;
     // this.itemsData.size = this.addItemForm.get('size').value;
 
