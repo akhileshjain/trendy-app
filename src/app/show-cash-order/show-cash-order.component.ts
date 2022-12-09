@@ -29,6 +29,7 @@ export class ShowCashOrderComponent implements OnInit {
   embCharge: number;
   embBreakUp: string;
   gstBillNumber: string;
+  freightText: string;
   totalQty: number = 0;
 
   ngOnInit() {
@@ -53,6 +54,7 @@ export class ShowCashOrderComponent implements OnInit {
           this.embCharge = res.embCharge;
           this.embBreakUp = res.embBreakUp;
           this.transCharge = res.transCharge;
+          this.freightText = res.freightText;
           this.netAmount = res.netAmount;
           this.gstBillNumber = res.gstbillNumber;
         }, error => {
@@ -62,7 +64,7 @@ export class ShowCashOrderComponent implements OnInit {
     })
   }
   printCurrentBill() {
-      const bill = getPrintCashOrderObject(this.cashOrderNumber, this.companyData, this.dbDate, this.items, this.embText, this.embCharge, this.embBreakUp, this.totalQty, this.billingTotal, this.gstRate, this.transCharge, this.netAmount, this.disc, this.grNo);    
+      const bill = getPrintCashOrderObject(this.cashOrderNumber, this.companyData, this.dbDate, this.items, this.embText, this.embCharge, this.embBreakUp, this.totalQty, this.billingTotal, this.gstRate, this.freightText, this.transCharge, this.netAmount, this.disc, this.grNo);    
       printBill(bill);
   }
 

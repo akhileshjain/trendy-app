@@ -28,6 +28,7 @@ export class ShowOrderComponent implements OnInit {
   embText: string;
   embCharge: number;
   embBreakUp: string;
+  freightText: string;
   gstBillNumber: string;
   totalQty: number = 0;
 
@@ -54,6 +55,7 @@ export class ShowOrderComponent implements OnInit {
           this.embBreakUp = res.embBreakUp;
           this.transCharge = res.transCharge;
           this.netAmount = res.netAmount;
+          this.freightText = res.freightText;
           this.gstBillNumber = res.gstbillNumber;
         }, error => {
             this.billExists = false;
@@ -62,8 +64,10 @@ export class ShowOrderComponent implements OnInit {
     })
   }
   printCurrentBill() {
-      const bill = getPrintBillObject(this.challanNumber, this.gstBillNumber, this.companyData, this.dbDate, this.items, this.embText, this.embCharge, this.embBreakUp, this.totalQty, this.billingTotal, this.gstRate, this.transCharge, this.netAmount, this.disc, this.grNo);    
-      printBill(bill);
+      const bill = getPrintBillObject(this.challanNumber, this.gstBillNumber, this.companyData, this.dbDate, this.items, this.embText, this.embCharge, this.embBreakUp, 
+        this.totalQty, this.billingTotal, this.gstRate, this.freightText, this.transCharge, this.netAmount, this.disc, this.grNo);    
+     
+        printBill(bill);
   }
 
 }

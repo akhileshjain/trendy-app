@@ -5,7 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "build:web": "netlify build",
     "build": "ng build",
+    "login": "netlify login",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -30,6 +32,7 @@
     "netlify-cli": "^2.71.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
+    "xlsx": "^0.17.3",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

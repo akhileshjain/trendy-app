@@ -1,7 +1,8 @@
 export const getBillObject = (challanNumber, gstbillNumber, companyId, companyData, billDate, table,
-    netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, discCost, grNo) => {
+    netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, discCost, grNo, freightText, discPercent) => {
 
-    let billObject = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: '', table: [], embText:'', embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
+    let billObject = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: '', table: [], embText:'', embCharge: '', 
+    embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: '', freightText: '', discPercent: 0.0};
 
     let rupeeSymbol = 'Rs.';
 
@@ -25,15 +26,17 @@ export const getBillObject = (challanNumber, gstbillNumber, companyId, companyDa
     billObject.netAmount = netAmount;
     // billObject.disc = rupeeSymbol + discCost;
     billObject.disc = discCost;
+    billObject.discPercent = discPercent;
     billObject.grNo = grNo;
-        
+    billObject.freightText = freightText;
+
     return billObject;
 }
 
 export const getCashOrderObject = (cashOrderNumber, companyId, companyData, cashOrderDate, table,
-    netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, discCost, grNo) => {
+    netQty, billTotal, embText, embrCharge, embBreakUp, gstRate, transCharge, netAmount, discCost, grNo, freightText) => {
 
-    let cashOrderObject = {cashOrderNumber: '', companyData: '', companyId: '', cashOrderDate: '', table: [], embText:'', embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: ''};
+    let cashOrderObject = {cashOrderNumber: '', companyData: '', companyId: '', cashOrderDate: '', table: [], embText:'', embCharge: '', embBreakUp: '', netQty: '', billingTotal: '', gstRate: '', transCharge: '', netAmount: '', disc: '', grNo: '', freightText: ''};
 
     cashOrderObject.cashOrderNumber = cashOrderNumber;
     cashOrderObject.companyId = companyId;
@@ -50,6 +53,7 @@ export const getCashOrderObject = (cashOrderNumber, companyId, companyData, cash
     cashOrderObject.netAmount = netAmount;
     cashOrderObject.disc = discCost;
     cashOrderObject.grNo = grNo;
+    cashOrderObject.freightText = freightText;
         
     return cashOrderObject;
 }

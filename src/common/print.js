@@ -2,8 +2,8 @@ import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import {formatterDate} from './util';
 
-export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, transCharge, netAmount, disc, grNo) => {
-    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
+export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, freightText, transCharge, netAmount, disc, grNo) => {
+    let bill = {challanNumber: '', gstbillNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, freightText: '', transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
 
     bill.challanNumber = challanNumber;
     bill.gstbillNumber = gstBillNumber;
@@ -17,6 +17,7 @@ export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, bi
     bill.billingTotal = billingTotal;
     bill.netQty = totalQty;
     bill.gstRate = gstRate;
+    bill.freightText = freightText;
     bill.transCharge = transCharge;
     bill.netAmount = netAmount;
     bill.disc = disc;
@@ -24,8 +25,9 @@ export const getPrintBillObject = (challanNumber, gstBillNumber, companyData, bi
 
     return bill;
 }
-export const getPrintCashOrderObject = (cashOrderNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, transCharge, netAmount, disc, grNo) => {
-    let cashOrder = {cashOrderNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
+export const getPrintCashOrderObject = (cashOrderNumber, companyData, billDate, items, embText, embCharge, embBreakUp, totalQty, billingTotal, gstRate, freightText, transCharge, netAmount, disc, grNo) => {
+   
+    let cashOrder = {cashOrderNumber: '', companyData: '', companyId: '', billDate: undefined, table: [], embText: '', embCharge: 0, embBreakUp: '',  netQty: 0, billingTotal: 0, gstRate: 0, freightText: '', transCharge: 0, netAmount: 0, disc: 0.0, grNo: ''};
 
     cashOrder.cashOrderNumber = cashOrderNumber;
     cashOrder.companyData = companyData;
@@ -39,9 +41,11 @@ export const getPrintCashOrderObject = (cashOrderNumber, companyData, billDate, 
     cashOrder.netQty = totalQty;
     cashOrder.gstRate = gstRate;
     cashOrder.transCharge = transCharge;
+    cashOrder.freightText = freightText;
     cashOrder.netAmount = netAmount;
     cashOrder.disc = disc;
     cashOrder.grNo = grNo;
+    cashOrder.freightText = freightText;
 
     return cashOrder;
 }
@@ -51,7 +55,7 @@ export const printBill = (billPage) => {
     let consData = [];
     let consArr = [];
 
-    let head = [['Sr No.', 'Item', 'Size', 'Rate (in Rs.)', 'Qty', 'Price (in Rs.)']];
+    let head = [['Sr No.', 'Item', 'Size', 'Rate (in Rs.)', 'Qty', 'Price']];
     billPage.table.forEach((i, index) => {
         let arr = [];
         let sr = index + 1 + '.';
@@ -79,7 +83,7 @@ export const printBill = (billPage) => {
         doc.text('ESTIMATE', 250, 45);
         // doc.setFontSize(10);
         doc.setFontSize(12);
-        doc.text('O - 0161-2704284', 470, 40);
+        doc.text('O - 0161-4648284', 470, 40);
         doc.setFontSize(14);
         if(billPage.challanNumber) {
             doc.text('Challan No: ' + billPage.challanNumber, 30, 70);
@@ -95,16 +99,45 @@ export const printBill = (billPage) => {
     
         (doc).autoTable({
         head: head,
+        headStyles: { fontStyle: 'bold', fontSize: 12 },
         body: data,
+        tableLineWidth: 1.75,
         startY: 150,
         theme: 'grid',
+        didParseCell: (cell, data) => {
+
+            let body = cell.table.body;
+            for(let i = 0; i < body.length; i++) {
+                if(body[i].cells[1].text[0].indexOf('Embroidery Charges') != -1) {
+                    body[i].cells[0].styles.fontStyle = 'bold';
+                    body[i].cells[1].styles.fontStyle = 'bold';
+                    body[i].cells[2].styles.fontStyle = 'bold';
+                    body[i].cells[3].styles.fontStyle = 'bold';
+                    body[i].cells[4].styles.fontStyle = 'bold';
+                    body[i].cells[5].styles.fontStyle = 'bold';
+                } else if(body[i].cells[1].text[0].indexOf('Frame Charges') != -1) {
+                    body[i].cells[0].styles.fontStyle = 'bold';
+                    body[i].cells[1].styles.fontStyle = 'bold';
+                    body[i].cells[2].styles.fontStyle = 'bold';
+                    body[i].cells[3].styles.fontStyle = 'bold';
+                    body[i].cells[4].styles.fontStyle = 'bold';
+                    body[i].cells[5].styles.fontStyle = 'bold';
+
+                }
+            }
+        },
         didDrawCell: data => {
 
         }
         })
         let finalY = doc.previousAutoTable.finalY; //this gives you the value of the end-y-axis-position of the previous autotable.
         if(billPage.grNo) {
-        doc.text('GR #: ' + billPage.grNo, 40, finalY + 20);
+
+        if(finalY + 20 > doc.internal.pageSize.height - 40) {
+            finalY = 0;
+            doc.addPage();
+        } 
+            doc.text('GR #: ' + billPage.grNo, 40, finalY + 20);
         }
 
         consArr.push('Total');
@@ -119,7 +152,11 @@ export const printBill = (billPage) => {
         consArr = [];
         }
         if(billPage.embCharge) {
-        consArr.push(billPage.embText + '(' + billPage.embBreakUp + ')');
+        if(billPage.embBreakUp) {
+            consArr.push(billPage.embText + '(' + billPage.embBreakUp + ')');
+        } else {
+            consArr.push(billPage.embText);
+        }
         consArr.push('Rs.' + billPage.embCharge.toFixed(2));
         consData.push(consArr);
         consArr = [];
@@ -131,7 +168,7 @@ export const printBill = (billPage) => {
         consArr = [];
         }
         if(billPage.transCharge) {
-        consArr.push('Transport Charges');
+        consArr.push(billPage.freightText);
         consArr.push('Rs.' +billPage.transCharge.toFixed(2));
         consData.push(consArr);
         consArr = [];
@@ -152,7 +189,7 @@ export const printBill = (billPage) => {
         margin: {'left': 225},
         theme: 'plain',
         columnStyles: {
-            0: {cellWidth: 220, fontSize: 12, fontStyle: 'bold'},
+            0: {cellWidth: 220, fontSize: 12},
             1: {cellWidth: 100, fontSize: 12},
         },
         didDrawCell: (cell, data) => {
