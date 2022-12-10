@@ -11,6 +11,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
+import {MatIconModule} from '@angular/material/icon';
 import {MatRadioModule} from '@angular/material/radio'
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { AddItemComponent } from './add-item/add-item.component';
@@ -53,6 +54,7 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
     MatSnackBarModule, 
     MatSelectModule,
     MatTableModule,
+    MatIconModule,
     MatInputModule,
     MatRadioModule,
     MatDatepickerModule,
